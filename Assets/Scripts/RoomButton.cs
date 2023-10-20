@@ -17,8 +17,6 @@ public class RoomButton : MonoBehaviour
 
     public void openRoom()
     {
-
-
         launcher.instance.joinRoom(info);
     }
 }

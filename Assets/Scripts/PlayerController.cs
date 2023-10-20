@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.Experimental.Rendering;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -50,6 +51,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 rb.drag = groundDrag;
             else
                 rb.drag = 0;
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                push();
+            }
         }
     }
 
@@ -74,8 +80,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void MyInput()
     {
-        if (photonView.IsMine)
-        {
+        
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -88,7 +93,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
-        }
+           
+        
     }
 
     private void MovePlayer()
@@ -134,7 +140,29 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
         }
     }
+    private void push()
+    {
+        Ray ray = cam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
+        ray.origin = cam.transform.position;
 
+        if(Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if(hit.collider.gameObject.tag == "Player")
+            {
+                hit.collider.gameObject.GetPhotonView().RPC("pushPerson", RpcTarget.All, this.transform);
+            }
+        }
+    }
+    [PunRPC]
+    public void pushPerson(Transform rot)
+    {
+        bePushed(rot);
+    }
+    public void bePushed(Transform rot)
+    {
+        if(photonView.IsMine)
+            rb.AddForce(rot.rotation * Vector3.forward * 5f);
+    }
     private void Jump()
     {
         if (photonView.IsMine)

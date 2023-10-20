@@ -5,9 +5,8 @@ using UnityEngine;
 public class camController : MonoBehaviour
 {
 
-    public float mouseSens;
-    float xRot;
-    float yRot;
+    [SerializeField] private float mouseSens;
+    float xRot, yRot;
     public Transform orientation;
     // Start is called before the first frame update
     void Start()

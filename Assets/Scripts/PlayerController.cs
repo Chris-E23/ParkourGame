@@ -5,34 +5,17 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    
-    public float moveSpeed;
 
-    public float groundDrag;
-
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
+    [SerializeField] private float moveSpeed, groundDrag, jumpForce, jumpCooldown, airMultiplier;
     bool readyToJump;
-
-  public float walkSpeed;
-   public float sprintSpeed;
-
-   
-    public KeyCode jumpKey = KeyCode.Space;
-
-    
-    public float playerHeight;
-    public LayerMask whatIsGround;
+    [SerializeField] private float walkSpeed, sprintSpeed;
+    [SerializeField] private KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] private float playerHeight;
+    [SerializeField] private LayerMask whatIsGround;
     bool isGrounded;
-
-    public Transform orientation;
-
-    float horizontalInput;
-    float verticalInput;
-
+    [SerializeField] private Transform orientation;
+    float horizontalInput, verticalInput;
     Vector3 moveDirection;
-
     Rigidbody rb;
 
     private void Start()

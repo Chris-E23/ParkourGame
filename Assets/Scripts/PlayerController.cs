@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private float playerHeight;
     [SerializeField] private LayerMask whatIsGround;
     bool isGrounded;
-    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform orientation, thirdPersonCam;
     float horizontalInput, verticalInput;
     Vector3 moveDirection;
     Rigidbody rb;
@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private float mouseSens;
     float xRot, yRot;
     [SerializeField] private GameObject player;
+    bool persp, rd;
 
     private void Start()
     {
@@ -32,15 +33,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
         rb.freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked;
         readyToJump = true;
-        
+        cam.transform.position = cameraPosition.position;
+        persp = true;
+        rd = false;
     }
 
     private void Update()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && !rd)
         {
             player.transform.rotation = cam.transform.rotation;
-            cam.transform.position = cameraPosition.position;
+           
             isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
 
             MyInput();
@@ -56,23 +59,41 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 push();
             }
+
+            if (Input.GetKey(KeyCode.H))
+            {
+                if (persp)
+                    persp = false;
+                else
+                    persp = true; 
+            }
+            //test 
+           /* if (Input.GetKey(KeyCode.P))
+            {
+                rd = true;
+            }
+           */
+            if (persp == true)
+            { cam.transform.position = cameraPosition.transform.position; }
+            else if (persp == false)
+            { cam.transform.position = thirdPersonCam.transform.position; }
+        }
+        else if (rd && photonView.IsMine)
+        {
+           rb.freezeRotation = false; 
         }
     }
 
     private void FixedUpdate()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && !rd)
         {
             MovePlayer();
-
-
             float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * mouseSens;
             float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * mouseSens;
-
             yRot += mouseX;
             xRot -= mouseY;
             xRot = Mathf.Clamp(xRot, -90f, 90f);
-
             cam.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
             orientation.rotation = Quaternion.Euler(0, yRot, 0);
         }
@@ -142,12 +163,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     private void push()
     {
-        Ray ray = cam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
+        Ray ray = cam.ViewportPointToRay(new Vector3(10f, 10f, 10f));
         ray.origin = cam.transform.position;
 
         if(Physics.Raycast(ray, out RaycastHit hit))
         {
-            if(hit.collider.gameObject.tag == "Player")
+            if(hit.collider.gameObject.tag == "player")
             {
                 hit.collider.gameObject.GetPhotonView().RPC("pushPerson", RpcTarget.All, this.transform);
             }
@@ -160,8 +181,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     public void bePushed(Transform rot)
     {
-        if(photonView.IsMine)
-            rb.AddForce(rot.rotation * Vector3.forward * 5f);
+        if (photonView.IsMine)
+        {
+            rd = true;
+            //rb.AddForce(rot.rotation * Vector3.forward * 5f);
+           
+        }
+            
     }
     private void Jump()
     {

@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     float xRot, yRot;
     [SerializeField] private GameObject player;
     bool persp, rd;
-
+    
     private void Start()
     {
         cam = Camera.main;
@@ -40,11 +40,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
+        //Debug.Log(isGrounded);
         if (photonView.IsMine && !rd)
         {
             player.transform.rotation = cam.transform.rotation;
            
-            isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+            
 
             MyInput();
             SpeedControl();
@@ -55,24 +58,24 @@ public class PlayerController : MonoBehaviourPunCallbacks
             else
                 rb.drag = 0;
 
-            if (Input.GetKey(KeyCode.E))
-            {
+           if (Input.GetKey(KeyCode.E))
+          {
                 push();
             }
 
-            if (Input.GetKey(KeyCode.H))
+            if (Input.GetKeyDown(KeyCode.H))
             {
                 if (persp)
                     persp = false;
                 else
                     persp = true; 
             }
-            //test 
-           /* if (Input.GetKey(KeyCode.P))
+           
+           if (Input.GetKey(KeyCode.P))
             {
                 rd = true;
             }
-           */
+           
             if (persp == true)
             { cam.transform.position = cameraPosition.transform.position; }
             else if (persp == false)
@@ -108,10 +111,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
             if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
             {
-                readyToJump = false;
-
                 Jump();
-
+                readyToJump = false;
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
            
@@ -122,6 +123,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
+
             moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
 
@@ -161,15 +163,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
         }
     }
-    private void push()
+    public void push()
     {
-        Ray ray = cam.ViewportPointToRay(new Vector3(10f, 10f, 10f));
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, .5f, 0));
         ray.origin = cam.transform.position;
 
         if(Physics.Raycast(ray, out RaycastHit hit))
         {
-            if(hit.collider.gameObject.tag == "player")
+            Debug.Log("hitting " + hit.collider.gameObject.tag);
+            if (hit.collider.gameObject.tag == "player")
             {
+                Debug.Log("hitting player");
                 hit.collider.gameObject.GetPhotonView().RPC("pushPerson", RpcTarget.All, this.transform);
             }
         }
@@ -191,18 +195,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     private void Jump()
     {
-        if (photonView.IsMine)
-        {
+        
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        }
+        
     }
     private void ResetJump()
     {
-        if (photonView.IsMine)
-        {
+       
             readyToJump = true;
-        }
+        
     }
 }

@@ -18,14 +18,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private Transform orientation, thirdPersonCam;
     float horizontalInput, verticalInput;
     Vector3 moveDirection;
-    Rigidbody rb;
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform cameraPosition;
     Camera cam;
     [SerializeField] private float mouseSens;
     float xRot, yRot;
     [SerializeField] private GameObject player;
     bool persp, rd;
-    
+    [SerializeField] private float time;
     private void Start()
     {
         cam = Camera.main;
@@ -36,22 +36,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
         cam.transform.position = cameraPosition.position;
         persp = true;
         rd = false;
+        time = 2;
     }
 
     private void Update()
     {
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
+     
         //Debug.Log(isGrounded);
+
+
         if (photonView.IsMine && !rd)
         {
             player.transform.rotation = cam.transform.rotation;
-           
-            
 
             MyInput();
             SpeedControl();
-
 
             if (isGrounded)
                 rb.drag = groundDrag;
@@ -60,7 +61,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
            if (Input.GetKey(KeyCode.E))
           {
-                push();
+               time -= Time.deltaTime;
+                if(time <= 0)
+                {
+                    push();
+                }
+                
             }
 
             if (Input.GetKeyDown(KeyCode.H))
@@ -75,6 +81,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 rd = true;
             }
+            
            
             if (persp == true)
             { cam.transform.position = cameraPosition.transform.position; }
@@ -83,7 +90,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         else if (rd && photonView.IsMine)
         {
-           rb.freezeRotation = false; 
+            if (persp == true)
+            { cam.transform.position = cameraPosition.transform.position; }
+            else if (persp == false)
+            { cam.transform.position = thirdPersonCam.transform.position; }
+            cam.transform.rotation = player.transform.rotation;
+            rb.freezeRotation = false;
+            if (Input.GetKey(KeyCode.T) && rd == true)
+            {
+                rd = false;
+                this.transform.Rotate(0, 0, 0);
+            }
         }
     }
 
@@ -167,28 +184,35 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, .5f, 0));
         ray.origin = cam.transform.position;
-
-        if(Physics.Raycast(ray, out RaycastHit hit))
-        {
-            Debug.Log("hitting " + hit.collider.gameObject.tag);
-            if (hit.collider.gameObject.tag == "player")
+      
+     
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.Log("hitting player");
-                hit.collider.gameObject.GetPhotonView().RPC("pushPerson", RpcTarget.All, this.transform);
+                Debug.Log("hitting " + hit.collider.gameObject.tag);
+                if (hit.collider.gameObject.tag == "player")
+                {
+                    Debug.Log("hitting player");
+                    hit.collider.gameObject.GetPhotonView().RPC("pushPerson", RpcTarget.All, cam.transform.forward);
+                }
             }
-        }
+
+        time = 2;
+
+        
+        
+      
     }
     [PunRPC]
-    public void pushPerson(Transform rot)
+    public void pushPerson(Vector3 rot)
     {
         bePushed(rot);
     }
-    public void bePushed(Transform rot)
+    public void bePushed(Vector3 rot)
     {
         if (photonView.IsMine)
         {
             rd = true;
-            //rb.AddForce(rot.rotation * Vector3.forward * 5f);
+            rb.AddForce(rot * 100f);
            
         }
             

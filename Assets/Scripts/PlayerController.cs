@@ -75,7 +75,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 pickup();
 
             }
+            if (Input.GetKey(KeyCode.G))
+            {
+                drop();
 
+            }
             if (Input.GetKeyDown(KeyCode.H))
             {
                 if (persp)
@@ -189,7 +193,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     public void pickup()
     {
-        Debug.Log("Attempt 1!");
+      
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, .5f, 0));
         ray.origin = cam.transform.position;
 
@@ -197,12 +201,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
            if(hit.collider.gameObject.tag == "gun")
             {
-                Debug.Log("Attempt 2!");   
-               hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All);
+               hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All, photonView.ViewID);
 
             }
         }
 
+    }
+    public void drop()
+    {
+        hand.transform.GetChild(0).gameObject.GetPhotonView().RPC("beDropped", RpcTarget.All);
     }
     public void push()
     {
@@ -254,5 +261,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
        
             readyToJump = true;
         
+    }
+    public Transform getHand()
+    {
+        return hand.transform;
     }
 }

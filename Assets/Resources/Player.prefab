@@ -119,7 +119,8 @@ MonoBehaviour:
   cameraPosition: {fileID: 1874892690820437724}
   mouseSens: 200
   player: {fileID: 1874892689087039539}
-  time: 0
+  hand: {fileID: 1874892690405402544}
+  time: 3
 --- !u!114 &4455267296908063393
 MonoBehaviour:
   m_ObjectHideFlags: 0

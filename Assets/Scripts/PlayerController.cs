@@ -23,9 +23,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Camera cam;
     [SerializeField] private float mouseSens;
     float xRot, yRot;
-    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject player, hand;
     bool persp, rd;
     [SerializeField] private float time;
+    bool holding;
+
     private void Start()
     {
         cam = Camera.main;
@@ -37,15 +39,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         persp = true;
         rd = false;
         time = 2;
+        gameController.instance.addToList(photonView.ViewID);
     }
 
     private void Update()
     {
 
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
-     
-        //Debug.Log(isGrounded);
-
+       
 
         if (photonView.IsMine && !rd)
         {
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             else
                 rb.drag = 0;
 
-           if (Input.GetKey(KeyCode.E))
+           if (Input.GetKey(KeyCode.F))
           {
                time -= Time.deltaTime;
                 if(time <= 0)
@@ -67,6 +68,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     push();
                 }
                 
+            }
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                pickup();
+
             }
 
             if (Input.GetKeyDown(KeyCode.H))
@@ -179,6 +186,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
             }
         }
+    }
+    public void pickup()
+    {
+        Debug.Log("Attempt 1!");
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, .5f, 0));
+        ray.origin = cam.transform.position;
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+           if(hit.collider.gameObject.tag == "gun")
+            {
+                Debug.Log("Attempt 2!");   
+               hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All);
+
+            }
+        }
+
     }
     public void push()
     {

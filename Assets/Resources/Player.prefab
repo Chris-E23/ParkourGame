@@ -120,7 +120,9 @@ MonoBehaviour:
   mouseSens: 200
   player: {fileID: 1874892689087039539}
   hand: {fileID: 1874892690405402544}
-  time: 3
+  shootingObject: {fileID: 0}
+  pushTime: 0
+  shootTime: 0
 --- !u!114 &4455267296908063393
 MonoBehaviour:
   m_ObjectHideFlags: 0

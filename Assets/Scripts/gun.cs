@@ -12,6 +12,7 @@ public class gun : MonoBehaviourPunCallbacks
     void Start()
     {
         yes = false;
+        
     }
     void Update()
     {
@@ -19,6 +20,7 @@ public class gun : MonoBehaviourPunCallbacks
         {
             this.transform.position = player.gameObject.GetComponent<PlayerController>().getHand().position;
             this.transform.SetParent(player.gameObject.GetComponent<PlayerController>().getHand());
+            
         }
         else
         {
@@ -39,7 +41,8 @@ public class gun : MonoBehaviourPunCallbacks
     {
          player = PhotonView.Find(id).gameObject;
          yes = true;
-        this.transform.Rotate(player.transform.forward);
+        transform.rotation = player.transform.rotation;
+        this.transform.Rotate(0,180,0);
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        
     }

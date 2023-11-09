@@ -70,6 +70,7 @@ Transform:
   - {fileID: 1874892690820437724}
   - {fileID: 1874892689608759258}
   - {fileID: 4643079341847542731}
+  - {fileID: 5085006036100312673}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -120,7 +121,7 @@ MonoBehaviour:
   mouseSens: 200
   player: {fileID: 1874892689087039539}
   hand: {fileID: 1874892690405402544}
-  shootingObject: {fileID: 0}
+  shootingPos: {fileID: 5584151619228355306}
   pushTime: 0
   shootTime: 0
 --- !u!114 &4455267296908063393
@@ -480,3 +481,34 @@ Transform:
   m_Father: {fileID: 1874892689087039548}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5584151619228355306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5085006036100312673}
+  m_Layer: 10
+  m_Name: shooting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5085006036100312673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5584151619228355306}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.574, y: 0.263, z: 1.86}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1874892689087039548}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}

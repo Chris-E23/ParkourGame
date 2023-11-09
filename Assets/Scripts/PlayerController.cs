@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Camera cam;
     [SerializeField] private float mouseSens;
     float xRot, yRot;
-    [SerializeField] private GameObject player, hand, shootingObject;
+    [SerializeField] private GameObject player, hand, shootingPos;
     bool persp, rd;
     [SerializeField] private float pushTime, shootTime;
     bool holding;
@@ -218,13 +218,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {return hand.transform;}
     public void shoot()
     {
-        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, .5f, 0));
-        ray.origin = cam.transform.position;
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            if (hit.collider.gameObject != null)
-            {PhotonNetwork.Instantiate("shootingObject", hand.transform.position, Quaternion.identity, 0);}
-        }
+       
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject", shootingPos.transform.position, Quaternion.identity, 0);
+        //obj.GetComponent<shootingObject>().shooting();
+        obj.GetPhotonView().RPC("shooting", RpcTarget.All, photonView.ViewID);
         shootTime = 0.4f;
     }
   

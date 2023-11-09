@@ -13,11 +13,30 @@ public class shootingObject : MonoBehaviourPunCallbacks
     void Update()
     {
         
+        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, 0.5f);
+      
+        foreach(Collider d in hitColliders){
+              Debug.Log(d.gameObject.tag);
+            if(d.gameObject.tag == "map"){
+                Collider[] objects = Physics.OverlapSphere(this.transform.position, 15);
+                foreach(Collider h in objects){
+                    Rigidbody r = h.gameObject.GetComponent<Rigidbody>();
+                    if(r!=null){
+                        r.AddExplosionForce(1000f, this.transform.position, 15);
+                }
+               
+            }
+             Destroy(this.gameObject);
+              Destroy(this);
+            }
+        }
+   
+           
+        
     }
-
-   public void OnPhotonInstantiate(PhotonMessageInfo info)
+    [PunRPC]
+   public void shooting(int photonID)
     {
-    
-       this.gameObject.GetComponent<Rigidbody>().AddForce(this.transform.forward * 100, ForceMode.Force);
+       this.gameObject.GetComponent<Rigidbody>().AddForce(PhotonView.Find(photonID).gameObject.transform.forward* 1000, ForceMode.Force);
     }   
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - player
   - gun
+  - map
   layers:
   - Default
   - TransparentFX

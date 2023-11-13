@@ -23,10 +23,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Camera cam;
     [SerializeField] private float mouseSens;
     float xRot, yRot;
-    [SerializeField] private GameObject player, hand, shootingPos;
+    [SerializeField] private GameObject player, hand, shootingPos, endPos;
     bool persp, rd;
-    [SerializeField] private float pushTime, shootTime;
+    [SerializeField] private float pushTime, shootTime, coyoteTime;
     bool holding;
+    private LineRenderer lineRenderer;
+    
     
 
     private void Start()
@@ -43,13 +45,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
         shootTime = .4f;
         gameController.instance.addToList(photonView.ViewID);
         holding = false;
+           lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.positionCount = 2; // Two points for start and end
+        lineRenderer.startWidth = 0.1f; // Adjust the width of the line
+        lineRenderer.endWidth = 0.1f;
     }
 
     private void Update()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
+        
         if (photonView.IsMine && !rd)
         {
+          
+            lineRenderer.SetPosition(0, hand.transform.position);
+            lineRenderer.SetPosition(1, endPos.transform.position);
+
             if(holding && Input.GetMouseButton(0))
             {
                 shootTime -= Time.deltaTime; 
@@ -211,6 +222,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
     }
     private void ResetJump()
     {readyToJump = true;}
@@ -224,5 +236,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
         obj.GetPhotonView().RPC("shooting", RpcTarget.All, photonView.ViewID);
         shootTime = 0.4f;
     }
-  
+  public Vector3 cameraVector(){
+        Vector3 directionVector = endPos.transform.position - hand.transform.position;
+
+        return directionVector;
+
+  } 
 }

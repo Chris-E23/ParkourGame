@@ -8,6 +8,7 @@ using UnityEngine.Experimental.Rendering;
 public class PlayerController : MonoBehaviourPunCallbacks
 {
 
+    [Header("Movement")]
     [SerializeField] private float moveSpeed, groundDrag, jumpForce, jumpCooldown, airMultiplier;
     bool readyToJump;
     [SerializeField] private float walkSpeed, sprintSpeed;
@@ -28,9 +29,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private float pushTime, shootTime, coyoteTime;
     bool holding;
     private LineRenderer lineRenderer;
-    
-    
-
+    [SerializeField] private LayerMask whatisWall;
+    private bool wallRunning;
+    private Vector3 dir; 
+    private GameObject gun; 
     private void Start()
     {
         cam = Camera.main;
@@ -45,7 +47,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         shootTime = .4f;
         gameController.instance.addToList(photonView.ViewID);
         holding = false;
-           lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.positionCount = 2; // Two points for start and end
         lineRenderer.startWidth = 0.1f; // Adjust the width of the line
         lineRenderer.endWidth = 0.1f;
@@ -54,12 +56,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private void Update()
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
-        
+     
+
         if (photonView.IsMine && !rd)
         {
-          
-            lineRenderer.SetPosition(0, hand.transform.position);
-            lineRenderer.SetPosition(1, endPos.transform.position);
+           if(gun != null)
+                dir = Vector3.Lerp(endPos.transform.forward, hand.transform.forward, 1000f);
+
+           // lineRenderer.SetPosition(0, hand.transform.position);
+            //lineRenderer.SetPosition(1, endPos.transform.position);
+       
 
             if(holding && Input.GetMouseButton(0))
             {
@@ -116,6 +122,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
             }
         }
     }
+   
+
 
     private void FixedUpdate()
     {
@@ -181,9 +189,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
         ray.origin = cam.transform.position;
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-           if(hit.collider.gameObject.tag == "gun")
+           if(hit.collider.gameObject.tag == "gun" && holding == false)
             {
                 hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All, photonView.ViewID);
+                gun = hit.collider.gameObject;
                 holding = true; 
             }
         }
@@ -192,6 +201,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         hand.transform.GetChild(0).gameObject.GetPhotonView().RPC("beDropped", RpcTarget.All);
         holding = false;
+        gun = null;
     }
     public void push()
     {
@@ -230,16 +240,23 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {return hand.transform;}
     public void shoot()
     {
-       
-        GameObject obj = PhotonNetwork.Instantiate("shootingObject", shootingPos.transform.position, Quaternion.identity, 0);
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject",gun.transform.GetChild(2).transform.position, Quaternion.identity, 0);
         //obj.GetComponent<shootingObject>().shooting();
         obj.GetPhotonView().RPC("shooting", RpcTarget.All, photonView.ViewID);
         shootTime = 0.4f;
     }
   public Vector3 cameraVector(){
         Vector3 directionVector = endPos.transform.position - hand.transform.position;
-
         return directionVector;
-
   } 
+  public bool getWallRunning(){
+        return wallRunning;
+  }
+   public bool setWallRunning(bool wallTrue){
+        return wallTrue;
+  }
+  public Vector3 getDir(){
+    return dir; 
+  }
+  
 }

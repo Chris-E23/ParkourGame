@@ -60,4 +60,6 @@ public class gun : MonoBehaviourPunCallbacks
         player = null;
         yes = false;
     }
+
+    
 }

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 public class spawnPlayers : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab, spawnPoint;
+    [SerializeField] private GameObject[] spawnPoints; 
     private GameObject player;
     void Start()
     {

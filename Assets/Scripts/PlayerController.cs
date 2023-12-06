@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private bool wallRunning;
     private Vector3 dir; 
     private GameObject gun; 
+    [SerializeField] private int team; 
+    private bool justJumped;
     private void Start()
     {
         cam = Camera.main;
@@ -47,10 +49,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
         shootTime = .4f;
         gameController.instance.addToList(photonView.ViewID);
         holding = false;
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.positionCount = 2; // Two points for start and end
-        lineRenderer.startWidth = 0.1f; // Adjust the width of the line
-        lineRenderer.endWidth = 0.1f;
+       // lineRenderer = gameObject.AddComponent<LineRenderer>();
+        //lineRenderer.positionCount = 2; // Two points for start and end
+        //lineRenderer.startWidth = 0.1f; // Adjust the width of the line
+       // lineRenderer.endWidth = 0.1f;
     }
 
     private void Update()
@@ -60,9 +62,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (photonView.IsMine && !rd)
         {
+
+            if(!justJumped&& !isGrounded){
+                coyoteTime -= Time.deltaTime;
+                if(coyoteTime < 0){
+                    coyoteTime = 0;
+                }
+                    
+                
+            }
            if(gun != null)
                 dir = Vector3.Lerp(endPos.transform.forward, hand.transform.forward, 1000f);
 
+            if(isGrounded){
+                coyoteTime = 0.5f;
+                justJumped = false; 
+            }
            // lineRenderer.SetPosition(0, hand.transform.position);
             //lineRenderer.SetPosition(1, endPos.transform.position);
        
@@ -144,8 +159,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
-            if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
+            if (Input.GetKey(jumpKey) && readyToJump && isGrounded || Input.GetKey(jumpKey) && coyoteTime > 0)
             {
+                justJumped = true; 
                 Jump();
                 readyToJump = false;
                 Invoke(nameof(ResetJump), jumpCooldown);
@@ -232,6 +248,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        
 
     }
     private void ResetJump()
@@ -257,6 +274,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
   }
   public Vector3 getDir(){
     return dir; 
+  }
+  public void setTeam(int team){
+    this.team = team;
+
+  }
+  public int getTeam(){
+    return this.team; 
   }
   
 }

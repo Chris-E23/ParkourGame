@@ -8,7 +8,10 @@ public class wallRunning : MonoBehaviour
    
     [SerializeField] LayerMask whatIsWall, whatIsGround;
     [SerializeField] private float wallRunForce, maxWallRunTime, wallRunTimer;
-   
+    public KeyCode upwardsRunKey = KeyCode.LeftShift; 
+    public KeyCode downwardsRunKey = KeyCode.LeftControl;
+    public float wallClimbSpeed;
+    private bool upwardsRunning, downwardsRunning;
     [Header("Input")]
     private float hInput, vInput; 
 
@@ -50,6 +53,8 @@ public class wallRunning : MonoBehaviour
     {
         hInput = Input.GetAxisRaw("Horizontal");
         vInput = Input.GetAxisRaw("Vertical");
+        upwardsRunning = Input.GetKey(upwardsRunKey);
+        downwardsRunning = Input.GetKey(downwardsRunKey);
 
         if((wallLeft || wallRight) && vInput > 0 && AboveGround()){
             //wallRun here 
@@ -71,10 +76,6 @@ public class wallRunning : MonoBehaviour
          pc.setWallRunning(true);
     }
 
-    private void WallRunning(){
-
-
-    }
     private void WallRunningMovement(){
         rb.useGravity=false;
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
@@ -93,6 +94,7 @@ public class wallRunning : MonoBehaviour
 
     private void StopWallRun(){
         pc.setWallRunning(true);
+        rb.useGravity = true;
     }
 
   

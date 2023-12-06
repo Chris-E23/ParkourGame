@@ -132,6 +132,7 @@ MonoBehaviour:
   whatisWall:
     serializedVersion: 2
     m_Bits: 0
+  team: 0
 --- !u!114 &4455267296908063393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,13 +220,16 @@ MonoBehaviour:
     m_Bits: 64
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   wallRunForce: 4
   maxWallRunTime: 4
-  wallRunTimer: 0
-  wallCheckDistance: 0
-  minJumpHeight: 0
-  orientation: {fileID: 0}
+  wallRunTimer: 4
+  upwardsRunKey: 304
+  downwardsRunKey: 306
+  wallClimbSpeed: 3
+  wallCheckDistance: 4
+  minJumpHeight: 3
+  orientation: {fileID: 1874892689249649042}
 --- !u!1 &1874892689249649041
 GameObject:
   m_ObjectHideFlags: 0

@@ -133,6 +133,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   team: 0
+  red: {fileID: 2100000, guid: ac6ceb505b188fb4cb95c86f0ecc6411, type: 2}
+  blue: {fileID: 2100000, guid: 78b29fd406a8efe4a8a3315a4db6daae, type: 2}
 --- !u!114 &4455267296908063393
 MonoBehaviour:
   m_ObjectHideFlags: 0

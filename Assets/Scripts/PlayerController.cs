@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private GameObject gun; 
     [SerializeField] private int team; 
     private bool justJumped;
+    [SerializeField] private Material red, blue; 
+ 
     private void Start()
     {
         cam = Camera.main;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         shootTime = .4f;
         gameController.instance.addToList(photonView.ViewID);
         holding = false;
+
        // lineRenderer = gameObject.AddComponent<LineRenderer>();
         //lineRenderer.positionCount = 2; // Two points for start and end
         //lineRenderer.startWidth = 0.1f; // Adjust the width of the line
@@ -282,5 +285,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public int getTeam(){
     return this.team; 
   }
-  
+  public void setTexture(int num){
+    if(num == 0){
+         this.GetComponent<Renderer>().material = red;
+    }
+    if(num == 1){
+         this.GetComponent<Renderer>().material = blue;
+    }
+   
+
+  }
 }

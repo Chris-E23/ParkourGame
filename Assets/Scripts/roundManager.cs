@@ -46,7 +46,6 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
             playerSend(PhotonNetwork.NickName);
             state = GameState.Playing;
         }
-        instance = this; 
     }
     public override void OnEnable(){
         PhotonNetwork.AddCallbackTarget(this);
@@ -62,8 +61,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void OnEvent(EventData photonEvent){
         if(photonEvent.Code < 200){
             EventCodes theEvent = (EventCodes)photonEvent.Code;
-            object[] data = (object[])photonEvent.CustomData; 
-
+            object[] data = (object[])photonEvent.CustomData;
             switch(theEvent){
                 case EventCodes.NewPlayer:
                    playerReceive(data);
@@ -81,16 +79,11 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
         object[] package = new object[3];
         package[0] = name; 
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
-        if(allPlayers.Count%2 == 0){
+        GameObject player;
+        if(allPlayers.Count%2 == 0)
             package[2] = 0;
-        }
-        else{
+        else
             package[2] = 1;
-        }
-          GameObject player = PhotonView.Find(int.Parse(PhotonNetwork.LocalPlayer.UserId)).gameObject;
-           player.GetComponent<PlayerController>().setTexture((int)package[2]);
-        
-       //this will be the team
         //send this to the masterclient and raise event 
         PhotonNetwork.RaiseEvent((byte)EventCodes.NewPlayer, package, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true});
 
@@ -141,7 +134,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
 public class PlayerInfo
 {
     public string name;
-    public int actor, kills, team;
+    public int actor, team;
 
     public PlayerInfo(string name, int actor, int team)
     {

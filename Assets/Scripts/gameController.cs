@@ -18,5 +18,12 @@ public class gameController : MonoBehaviour
     public void addToList(int id)
     {
         ids.Add(id);
+        Debug.Log("ids Count" + ids.Count);
+    }
+    public int getId(int id){
+        return ids[id];
+    }
+    public int getLength(){
+        return ids.Count;
     }
 }

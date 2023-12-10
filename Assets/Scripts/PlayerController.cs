@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     Camera cam;
     [SerializeField] private float mouseSens;
     float xRot, yRot;
-    [SerializeField] private GameObject player, hand, shootingPos, endPos;
+    [SerializeField] private GameObject player, hand, shootingPos, endPos, playerModel;
     bool persp, rd;
     [SerializeField] private float pushTime, shootTime, coyoteTime;
     bool holding;
@@ -50,6 +50,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         pushTime = 2;
         shootTime = .4f;
         gameController.instance.addToList(photonView.ViewID);
+        /*
+        if(photonView.IsMine){
+            if(gameController.instance.getLength() % 2 == 0)
+                playerModel.GetComponent<Renderer>().material = red;
+            else
+                playerModel.GetComponent<Renderer>().material = blue;
+        }
+        */
+        
+        
         holding = false;
 
        // lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -278,21 +288,5 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public Vector3 getDir(){
     return dir; 
   }
-  public void setTeam(int team){
-    this.team = team;
-
-  }
-  public int getTeam(){
-    return this.team; 
-  }
-  public void setTexture(int num){
-    if(num == 0){
-         this.GetComponent<Renderer>().material = red;
-    }
-    if(num == 1){
-         this.GetComponent<Renderer>().material = blue;
-    }
-   
-
-  }
+  
 }

@@ -100,7 +100,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
             object[] piece = new object[4];
             piece[0] = allPlayers[i].name;
             piece[1] = allPlayers[i].actor;
-            piece[3] = allPlayers[i].team;
+            piece[2] = allPlayers[i].team;
             package[i+1] = piece; 
         }
 

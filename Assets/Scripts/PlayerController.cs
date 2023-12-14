@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
         if (photonView.IsMine && !rd)
         {
-            Debug.Log((justJumped));
+            //Debug.Log((justJumped));
             if(!justJumped&& !isGrounded){
                 coyoteTime -= Time.deltaTime;
                 if(coyoteTime < 0){

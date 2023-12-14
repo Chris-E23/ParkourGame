@@ -56,7 +56,9 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     void Update()
     {
-       
+      foreach(PlayerInfo player in allPlayers){
+            Debug.Log(player.actor);
+        }
     }
     public void OnEvent(EventData photonEvent){
         if(photonEvent.Code < 200){

@@ -9,8 +9,11 @@ public class gun : MonoBehaviourPunCallbacks
 {
     bool yes;
     private GameObject player;
+    
+
     void Start()
     {
+        
         yes = false;
         
     }
@@ -43,6 +46,7 @@ public class gun : MonoBehaviourPunCallbacks
          yes = true;
         transform.rotation = player.transform.rotation;
         this.transform.Rotate(0,180,0);
+        this.transform.SetParent(Camera.main.gameObject.transform);
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        
     }

@@ -127,8 +127,16 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
     
- 
- }
+    public int getTeam(int actorNumber){
+        foreach(PlayerInfo player in allPlayers){
+            if(player.actor == actorNumber){
+                return player.actor;
+            }
+
+        }
+        return -1;
+    }
+}
 
 [System.Serializable]
 public class PlayerInfo

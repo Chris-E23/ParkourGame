@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 2684664483287344696}
   - component: {fileID: 113987619754825086}
   - component: {fileID: 8495113545366888393}
+  - component: {fileID: 3307943268078828450}
   m_Layer: 10
   m_Name: Player
   m_TagString: player
@@ -129,7 +130,7 @@ MonoBehaviour:
   playerModel: {fileID: 1874892689607812217}
   pushTime: 0
   shootTime: 0
-  coyoteTime: 3
+  coyoteTime: 1.5
   whatisWall:
     serializedVersion: 2
     m_Bits: 64
@@ -233,6 +234,24 @@ MonoBehaviour:
   wallCheckDistance: 4
   minJumpHeight: 3
   orientation: {fileID: 1874892689249649042}
+--- !u!114 &3307943268078828450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874892689087039539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b568076de3d86485a8e7232115c3ad6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  kills: 0
+  actorNumber: 0
+  playerObj: {fileID: 1874892689607812217}
+  red: {fileID: 2100000, guid: ac6ceb505b188fb4cb95c86f0ecc6411, type: 2}
+  blue: {fileID: 2100000, guid: 78b29fd406a8efe4a8a3315a4db6daae, type: 2}
 --- !u!1 &1874892689249649041
 GameObject:
   m_ObjectHideFlags: 0

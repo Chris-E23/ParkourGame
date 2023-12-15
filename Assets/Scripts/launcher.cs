@@ -5,12 +5,12 @@ using Photon.Pun;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Photon.Realtime;
-
+using System.Runtime.CompilerServices;
 
 public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
 {
     public static launcher instance;
-    [SerializeField] private GameObject loadingScreen, menuButtons, createRoomScreen, errorScreen, roomBrowserScreen, nameInputScreen, roomScreen, startButton;
+    [SerializeField] private GameObject loadingScreen, menuButtons, createRoomScreen, errorScreen, roomBrowserScreen, nameInputScreen, roomScreen, startButton, settingsScreen;
     [SerializeField] private TMP_Text loadingText, playerNameLabel, errorText, roomName;
     [SerializeField] private TMP_InputField roomNameInput, nicknameInput;
     private List<TMP_Text> allPlayerNames = new List<TMP_Text>();
@@ -24,12 +24,12 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
         CloseMenus();
         loadingScreen.SetActive(true);
         loadingText.text = "Connecting to Network...";
-        if(!PhotonNetwork.IsConnected) 
+        if (!PhotonNetwork.IsConnected)
             PhotonNetwork.ConnectUsingSettings();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-      
+
     }
     public void startGame()
     {
@@ -44,6 +44,7 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
         errorScreen.SetActive(false);
         roomBrowserScreen.SetActive(false);
         nameInputScreen.SetActive(false);
+        settingsScreen.SetActive(false);
 
     }
     public void openRB()
@@ -70,11 +71,16 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
             Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
 
     }
-   
+
     public void openCreateRoom()
     {
         CloseMenus();
         createRoomScreen.SetActive(true);
+    }
+    public void openSettings()
+    {
+        CloseMenus();
+        settingsScreen.SetActive(true);
     }
     public void setNickName()
     {

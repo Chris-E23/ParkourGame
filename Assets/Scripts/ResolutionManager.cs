@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ResolutionManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private Dropdown resolutionDropdown;
 
     private Resolution[] resolutions;
     private List<Resolution> filteredResolutions;
@@ -52,11 +53,6 @@ public class ResolutionManager : MonoBehaviour
             Screen.SetResolution(resolution.width, resolution.height, true);
         else if (Screen.fullScreenMode == FullScreenMode.Windowed)
             Screen.SetResolution(resolution.width, resolution.height, false);
-
-    }
-    public void setCurrentResolutionIndex()
-    {
-     
 
     }
     void Update()

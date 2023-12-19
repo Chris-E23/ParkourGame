@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using UnityEngine.Experimental.Rendering;
+using System.Runtime.CompilerServices;
 
 public class PlayerController : MonoBehaviourPunCallbacks
 {
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private GameObject gun; 
     [SerializeField] private int team; 
     private bool justJumped;
-    [SerializeField] private Material red, blue; 
- 
+    [SerializeField] private Material red, blue;
+    [SerializeField] private Animator playeranimator;
     private void Start()
     {
         cam = Camera.main;
@@ -65,6 +66,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
         if (photonView.IsMine && !rd)
         {
+            if(moveDirection != Vector3.zero)
+            {
+                playeranimator.SetBool("isMoving", true);
+            }
+            else
+            {
+                playeranimator.SetBool("isMoving", false);
+            }
             //Debug.Log((justJumped));
             if(!justJumped&& !isGrounded){
                 coyoteTime -= Time.deltaTime;
@@ -141,8 +150,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
     }
    
-
-
     private void FixedUpdate()
     {
         if (photonView.IsMine && !rd)

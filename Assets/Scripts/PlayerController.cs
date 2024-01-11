@@ -21,11 +21,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     float horizontalInput, verticalInput;
     Vector3 moveDirection;
     [SerializeField] private Rigidbody rb;
+    [Header("Camera Stuff")]
     [SerializeField] private Transform cameraPosition;
     Camera cam;
     [SerializeField] private float mouseSens;
     float xRot, yRot;
-    [SerializeField] private GameObject player, hand, shootingPos, endPos, playerModel;
+    [SerializeField] private GameObject player, hand, shootingPos, endPos, playerModel, head;
     bool persp, rd;
     [SerializeField] private float pushTime, shootTime, coyoteTime;
     bool holding;
@@ -82,6 +83,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 }
                     
                 
+            }
+            if(playerModel != null)
+            {
+                head.transform.rotation = Quaternion.Euler(-180, yRot, 0);
             }
            if(gun != null)
                 dir = Vector3.Lerp(endPos.transform.forward, hand.transform.forward, 1000f);

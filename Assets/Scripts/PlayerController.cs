@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         shootTime = .4f;
         gameController.instance.addToList(photonView.ViewID); 
         holding = false;
-        initialRotation = this.transform.rotation; 
+        initialRotationPlayer = this.transform.rotation; 
         initialRotationPlayerModel = playerModel.transform.rotation;
        // lineRenderer = gameObject.AddComponent<LineRenderer>();
         //lineRenderer.positionCount = 2; // Two points for start and end
@@ -70,9 +70,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
      
-        
+       
         if (photonView.IsMine && !fallen)
         {
+             if(cam.transform.position!=cameraPosition.position)
+                cam.transform.position = cameraPosition.position;
              //Input & Speed 
             MyInput();
             SpeedControl();

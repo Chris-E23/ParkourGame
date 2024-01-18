@@ -34,6 +34,7 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
     public void startGame()
     {
         PhotonNetwork.LoadLevel("SampleScene");
+    
     }
     void CloseMenus()
     {

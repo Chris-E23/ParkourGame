@@ -6,19 +6,24 @@ using System.Runtime.CompilerServices;
 
 public class spawnPlayers : MonoBehaviour
 {
-    [SerializeField] private GameObject playerPrefab, spawnPoint;
-    [SerializeField] private GameObject[] spawnPoints; 
+    [SerializeField] private GameObject playerPrefab, spawnPoint1, spawnPoint2;
+   
     private GameObject player;
     void Start()
     {
         if (PhotonNetwork.IsConnected)
         {
-            spawnPlayer();
+            if(PhotonNetwork.LocalPlayer.ActorNumber% 2 == 0){
+                spawnPlayer(spawnPoint1);
+            }
+            else{
+                spawnPlayer(spawnPoint2);
+            }
         }
     }
 
-    public void spawnPlayer()
+    public void spawnPlayer(GameObject location)
     {
-        player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.transform.position, spawnPoint.transform.rotation);
+        player = PhotonNetwork.Instantiate(playerPrefab.name, location.transform.position, location.transform.rotation);
     }
 }

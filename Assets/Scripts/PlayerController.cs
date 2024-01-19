@@ -41,8 +41,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private Animator playeranimator;
     
     [SerializeField] private Transform playerHolder; 
+    [SerializeField] private TMP_Text playerTag; 
+    [SerializeField] private GameObject[] bodyParts; 
     private Quaternion initialRotationPlayer, initialRotationPlayerModel; 
-
+   int playerNum; 
     private void Start()
     {
         cam = Camera.main;
@@ -59,6 +61,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
         holding = false;
         initialRotationPlayer = this.transform.rotation; 
         initialRotationPlayerModel = playerModel.transform.rotation;
+        playerTag.text = PhotonNetwork.NickName;
+         playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        if(playerNum%2 == 0){
+            foreach(GameObject obj in bodyParts){
+                obj.GetComponent<MeshRenderer>().material = red;
+            }
+            
+            team = 2; 
+        }
+        else{
+            foreach(GameObject obj in bodyParts){
+                obj.GetComponent<MeshRenderer>().material = blue;
+            }
+            team = 1;
+        }
+
+        
+        
+      
        // lineRenderer = gameObject.AddComponent<LineRenderer>();
         //lineRenderer.positionCount = 2; // Two points for start and end
         //lineRenderer.startWidth = 0.1f; // Adjust the width of the line
@@ -283,7 +305,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 if (hit.collider.gameObject.tag == "player")
                 {
-                    Debug.Log("hitting player");
+                    //Debug.Log("hitting player");
                     hit.collider.gameObject.GetPhotonView().RPC("pushPerson", RpcTarget.All, cam.transform.forward);
                 }
             }

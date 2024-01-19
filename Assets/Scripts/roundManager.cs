@@ -56,10 +56,10 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     void Update()
     {
-      foreach(PlayerInfo player in allPlayers){
-           // Debug.Log(player.actor);
-        }
+    
     }
+    
+    
     public void OnEvent(EventData photonEvent){
         if(photonEvent.Code < 200){
             EventCodes theEvent = (EventCodes)photonEvent.Code;
@@ -129,15 +129,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
     
-    public int getTeam(int actorNumber){
-        foreach(PlayerInfo player in allPlayers){
-            if(player.actor == actorNumber){
-                return player.actor;
-            }
 
-        }
-        return -1;
-    }
 }
 
 [System.Serializable]

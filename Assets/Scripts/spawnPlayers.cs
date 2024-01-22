@@ -13,7 +13,7 @@ public class spawnPlayers : MonoBehaviour
     {
         if (PhotonNetwork.IsConnected)
         {
-            if(PhotonNetwork.LocalPlayer.ActorNumber% 2 == 0){
+            if((PhotonNetwork.LocalPlayer.ActorNumber+1)% 2 == 0){
                 spawnPlayer(spawnPoint1);
             }
             else{

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 
-public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
+public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use this to be able to use photonevents. 
 {
     
     public static roundManager instance; 
@@ -21,12 +21,17 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
         ListPlayers,
         UpdateStat, 
         NextMatch,
-        TimerSync
+        TimerSync,
+
+        NewLocalPlayer
 
     }
 
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
-    
+    public List<GameObject> allPlayerObjects = new List<GameObject>();
+    public List<PlayerInfo> blueTeam = new List<PlayerInfo>();
+    public List<PlayerInfo> redTeam = new List<PlayerInfo>(); 
+
     private int index; 
     
     public enum GameState{
@@ -43,7 +48,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
             SceneManager.LoadScene(0);
         }
         else{
-            playerSend(PhotonNetwork.NickName);
+            //playerSend(PhotonNetwork.NickName);
             state = GameState.Playing;
         }
     }
@@ -58,7 +63,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
     
     }
-    
+  
     
     public void OnEvent(EventData photonEvent){
         if(photonEvent.Code < 200){
@@ -77,22 +82,35 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
 
     
-    public void playerSend(string name){
+    public void playerSend(string name, int playerId){
         object[] package = new object[3];
         package[0] = name; 
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
-        GameObject player;
-        if(allPlayers.Count%2 == 0)
-            package[2] = 0;
-        else
-            package[2] = 1;
+        
+        package[2] = playerId;
+        
+        
         //send this to the masterclient and raise event 
-        PhotonNetwork.RaiseEvent((byte)EventCodes.NewPlayer, package, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true});
+        PhotonNetwork.RaiseEvent((byte)EventCodes.NewPlayer, package, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); //ohhh this sends to the server. 
+        //Just gotta use server events. I think this sends to all the same script. 
 
     }
     public void playerReceive(object[] dataReceived){
         PlayerInfo player = new PlayerInfo((string)dataReceived[0], (int)dataReceived[1], (int)dataReceived[2]);
         allPlayers.Add(player);
+        if(player.team == 1){
+            blueTeam.Add(player);
+        }
+        else{
+            redTeam.Add(player);
+        }
+
+        foreach(PlayerInfo playerInf in blueTeam) {
+            Debug.Log("Blue team " + playerInf.name);
+        }
+        foreach(PlayerInfo playerInf in redTeam) {
+            Debug.Log("Red team " + playerInf.name);
+        }
         ListPlayersSend();
     }   
     public void ListPlayersSend(){

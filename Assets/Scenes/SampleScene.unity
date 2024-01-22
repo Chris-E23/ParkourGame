@@ -1708,7 +1708,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh32258
+  m_Name: pb_Mesh24566
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -1878,6 +1878,30 @@ PrefabInstance:
     - target: {fileID: -2751842086750447799, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: sceneViewId
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.506
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 1809759350020993005, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: m_Name
@@ -2739,6 +2763,26 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1582311818139721407, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 1809759350020993005, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: m_Name
       value: gun
@@ -3150,7 +3194,7 @@ GameObject:
   - component: {fileID: 1898161036}
   - component: {fileID: 1898161035}
   - component: {fileID: 1898161034}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: invisible wall
   m_TagString: map
   m_Icon: {fileID: 0}

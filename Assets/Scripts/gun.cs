@@ -45,7 +45,7 @@ public class gun : MonoBehaviourPunCallbacks
          player = PhotonView.Find(id).gameObject;
          yes = true;
         transform.rotation = hand.transform.rotation;
-        
+        this.transform.Rotate(0, 0, 180);
         this.transform.SetParent(Camera.main.gameObject.transform);
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        

@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         initialRotationPlayer = this.transform.rotation; 
         initialRotationPlayerModel = playerModel.transform.rotation;
         playerTag.text = PhotonNetwork.NickName;
-         playerNum = PhotonNetwork.LocalPlayer.ActorNumber;
+         playerNum = PhotonNetwork.LocalPlayer.ActorNumber+1;
 
         if(playerNum%2 == 0){
             foreach(GameObject obj in bodyParts){
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             team = 1;
         }
 
-        
+        roundManager.instance.playerSend(PhotonNetwork.NickName, photonView.ViewID);
         
       
        // lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -333,7 +333,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {return hand.transform;}
     public void shoot()
     {
-        GameObject obj = PhotonNetwork.Instantiate("shootingObject",gun.transform.GetChild(2).transform.position, Quaternion.identity, 0);
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject", gun.transform.GetChild(2).transform.position, Quaternion.identity, 0);
         obj.GetPhotonView().RPC("shooting", RpcTarget.All, photonView.ViewID);
         shootTime = 0.4f;
     }
@@ -349,6 +349,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
   }
   public Vector3 getDir(){
     return dir; 
+  }
+  public int getTeam(){
+    return team; 
   }
   
 }

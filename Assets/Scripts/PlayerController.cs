@@ -43,14 +43,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private Transform playerHolder; 
     [SerializeField] private TMP_Text playerTag; 
     [SerializeField] private GameObject[] bodyParts; 
+    [Header("UI")]
+    [SerializeField] private GameObject playerMenu; 
     private Quaternion initialRotationPlayer, initialRotationPlayerModel; 
    int playerNum; 
+   bool enabledMenu;
     private void Start()
     {
         
 
-
-       
+        enabledMenu = false; 
+       playerMenu.SetActive(false);
         cam = Camera.main;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -99,6 +102,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine && !fallen)
         {
             
+            if(Input.GetKeyDown(KeyCode.Escape)){
+                Cursor.lockState = CursorLockMode.Locked;
+                playerMenu.SetActive(!enabledMenu);
+                enabledMenu = !enabledMenu;
+            }
              isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
              if(cam.transform.position!=cameraPosition.position)
                 cam.transform.position = cameraPosition.position;
@@ -221,7 +229,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
    
     private void FixedUpdate()
     {
-        if (photonView.IsMine && !fallen)
+        if (photonView.IsMine && !fallen && !enabledMenu)
         {
             MovePlayer();
             float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * mouseSens;
@@ -358,5 +366,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public int getTeam(){
     return team; 
   }
-  
+  public void quit(){
+
+    if(PhotonNetwork.IsConnected){
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+        PhotonNetwork.LoadLevel("MainMenu");
+    }
+  }
 }

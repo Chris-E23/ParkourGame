@@ -1883,6 +1883,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gun (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6651292740500587710, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7751832637171013977, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -2742,6 +2746,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: gun
       objectReference: {fileID: 0}
+    - target: {fileID: 6651292740500587710, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7751832637171013977, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3287,6 +3295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allPlayers: []
+  allPlayerObjects: []
+  blueTeam: []
+  redTeam: []
   state: 0
 --- !u!1 &2105299025
 GameObject:

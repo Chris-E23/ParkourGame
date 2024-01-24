@@ -47,6 +47,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
    int playerNum; 
     private void Start()
     {
+        
+
+
+       
         cam = Camera.main;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -80,7 +84,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         roundManager.instance.playerSend(PhotonNetwork.NickName, photonView.ViewID);
         
-      
+       
        // lineRenderer = gameObject.AddComponent<LineRenderer>();
         //lineRenderer.positionCount = 2; // Two points for start and end
         //lineRenderer.startWidth = 0.1f; // Adjust the width of the line
@@ -90,11 +94,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
-     
+       
        
         if (photonView.IsMine && !fallen)
         {
+            
+             isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
              if(cam.transform.position!=cameraPosition.position)
                 cam.transform.position = cameraPosition.position;
              //Input & Speed 

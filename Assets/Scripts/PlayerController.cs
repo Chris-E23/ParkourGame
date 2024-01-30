@@ -5,7 +5,7 @@ using TMPro;
 using Photon.Pun;
 using UnityEngine.Experimental.Rendering;
 using System.Runtime.CompilerServices;
-
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviourPunCallbacks
 {
 
@@ -102,6 +102,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine && !fallen)
         {
             
+
+            // Whenever the player touches the safe zone //
+
+            if(this.transform.gameObject.GetComponent<CapsuleCollider>().tag == "safeZoneTeleport"){
+
+                this.gameObject.GetComponent<PhotonView>().RPC("teleportSafeZone", RpcTarget.All);
+                Debug.Log("Safe!");
+
+            }
+
             if(Input.GetKeyDown(KeyCode.Escape)){
                 Cursor.lockState = CursorLockMode.Locked;
                 playerMenu.SetActive(!enabledMenu);
@@ -368,10 +378,28 @@ public class PlayerController : MonoBehaviourPunCallbacks
   }
   public void quit(){
 
-    if(PhotonNetwork.IsConnected){
+    /*if(PhotonNetwork.IsConnected){
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel("MainMenu");
     }
+    */
+   
+    PhotonNetwork.LeaveRoom();
+    
+  }
+public override void OnLeftRoom()
+{
+    SceneManager.LoadScene(0);
+   PhotonNetwork.LoadLevel("MainMenu");
+  
+    base.OnLeftRoom();
+}
+  [PunRPC]
+  public void teleportSafeZone(){
+    
+
+        this.transform.position = gameController.instance.safeZonePosition().transform.position;
+    
   }
 }

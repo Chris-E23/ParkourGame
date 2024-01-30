@@ -6,7 +6,7 @@ public class gameController : MonoBehaviour
 {
     
     [SerializeField] private List<int> ids;
-   
+    [SerializeField] Transform safeZonePos; 
     public static gameController instance;
 
     private void Awake()
@@ -25,5 +25,12 @@ public class gameController : MonoBehaviour
     }
     public int getLength(){
         return ids.Count;
+    }
+
+    
+    public Transform safeZonePosition(){
+
+        return safeZonePos; 
+
     }
 }

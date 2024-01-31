@@ -23,15 +23,18 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
         NextMatch,
         TimerSync,
 
-        NewLocalPlayer
+        SafePlayerAdd
+
 
     }
 
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
     public List<GameObject> allPlayerObjects = new List<GameObject>();
     public List<PlayerInfo> blueTeam = new List<PlayerInfo>();
-    public List<PlayerInfo> redTeam = new List<PlayerInfo>(); 
+    public List<PlayerInfo> redTeam = new List<PlayerInfo>();
 
+    int safeCount; 
+    
     private int index; 
     
     public enum GameState{
@@ -52,20 +55,21 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
             state = GameState.Playing;
         }
     }
-    public override void OnEnable(){
+    public override void OnEnable(){//add as a listener for photon events?
         PhotonNetwork.AddCallbackTarget(this);
 
     }
-    public override void OnDisable(){
+    public override void OnDisable(){ //remove as a listener for events
         PhotonNetwork.RemoveCallbackTarget(this);
     }
     void Update()
     {
-    
+        
+       
     }
   
     
-    public void OnEvent(EventData photonEvent){
+    public void OnEvent(EventData photonEvent){ // do something whenever an event is called through the photon network. 
         if(photonEvent.Code < 200){
             EventCodes theEvent = (EventCodes)photonEvent.Code;
             object[] data = (object[])photonEvent.CustomData;
@@ -76,6 +80,10 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
                 case EventCodes.ListPlayers:
                     ListPlayersReceive(data);
                     break;
+              case EventCodes.SafePlayerAdd:
+                    receiveSafePlayer(data);
+                    break;
+                    
               
             }
         }
@@ -86,7 +94,6 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
         object[] package = new object[3];
         package[0] = name; 
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
-        
         package[2] = playerId;
         
         
@@ -142,9 +149,28 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
             allPlayers.Add(player);
 
             if(PhotonNetwork.LocalPlayer.ActorNumber == player.actor){
-                index = i - 1;
+                index = i - 1; // this saves the index of the player always locally. 
+                
             }
         }
+    }
+
+    public void addSafePlayer(){
+         PhotonNetwork.RaiseEvent((byte)EventCodes.SafePlayerAdd, null, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); 
+         // I might just be able to use <PhotonView>().RPC("teleportSafeZone", RpcTarget.All); here but idk \\
+       //  this.gameObject.GetComponent<PhotonView>().RPC("receiveSafePlayer", RpcTarget.All);
+
+    }
+
+    public void receiveSafePlayer(object thing){
+        safeCount++;
+        Debug.Log("player added to safe count");
+        if(allPlayers.Count > 1 && safeCount > (int)blueTeam.Count/2)
+            PhotonNetwork.LoadLevel("level2");
+        else if(safeCount == redTeam.Count && safeCount != 0)
+            PhotonNetwork.LoadLevel("level2");
+    
+        
     }
     
 
@@ -155,11 +181,13 @@ public class PlayerInfo
 {
     public string name;
     public int actor, team;
+ 
 
     public PlayerInfo(string name, int actor, int team)
     {
         this.name = name;
         this.actor = actor;
         this.team = team;
+      
     }
 }

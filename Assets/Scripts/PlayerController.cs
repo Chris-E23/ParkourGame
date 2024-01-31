@@ -104,14 +104,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
             
 
             // Whenever the player touches the safe zone //
-
+            /*
             if(this.transform.gameObject.GetComponent<CapsuleCollider>().tag == "safeZoneTeleport"){
 
                 this.gameObject.GetComponent<PhotonView>().RPC("teleportSafeZone", RpcTarget.All);
                 Debug.Log("Safe!");
 
             }
-
+            */
             if(Input.GetKeyDown(KeyCode.Escape)){
                 Cursor.lockState = CursorLockMode.Locked;
                 playerMenu.SetActive(!enabledMenu);
@@ -397,8 +397,6 @@ public override void OnLeftRoom()
 }
   [PunRPC]
   public void teleportSafeZone(){
-    
-
         this.transform.position = gameController.instance.safeZonePosition().transform.position;
     
   }

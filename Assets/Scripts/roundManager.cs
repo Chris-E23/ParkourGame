@@ -164,7 +164,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
 
     public void receiveSafePlayer(object thing){
         safeCount++;
-        Debug.Log("player added to safe count");
+        //Debug.Log("player added to safe count");
         if(allPlayers.Count > 1 && safeCount > (int)blueTeam.Count/2)
             PhotonNetwork.LoadLevel("level2");
         else if(safeCount == redTeam.Count && safeCount != 0)

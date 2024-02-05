@@ -16,7 +16,7 @@ public class shootingObject : MonoBehaviourPunCallbacks
         Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, 0.5f);
       
         foreach(Collider d in hitColliders){
-              Debug.Log(d.gameObject.tag);
+              //Debug.Log(d.gameObject.tag);
             if(d.gameObject.tag == "map"){
                 Collider[] objects = Physics.OverlapSphere(this.transform.position, 15);
                 foreach(Collider h in objects){

@@ -10,13 +10,22 @@ public class ResolutionManager : MonoBehaviour
     private List<Resolution> filteredResolutions;
     private float currentRefreshRate;
     private int currentResolutionIndex = 0; 
-    
+    bool once; 
 
     void Start()
     {
+       
         resolutions = Screen.resolutions;
         filteredResolutions = new List<Resolution>();
-        resolutionDropdown.ClearOptions();
+        if(resolutionDropdown.gameObject.activeInHierarchy){
+             resolutionDropdown.ClearOptions();
+             once = true; 
+        }
+        else{
+            once = false; 
+        }
+           
+        
         currentRefreshRate = Screen.currentResolution.refreshRate;
         foreach (Resolution res in resolutions)
         {
@@ -55,6 +64,10 @@ public class ResolutionManager : MonoBehaviour
     }
     void Update()
     {
+        if(once == false && resolutionDropdown.gameObject.activeInHierarchy){
+            once = true; 
+            resolutionDropdown.ClearOptions();
+        }
         
     }
 }

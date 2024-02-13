@@ -5,9 +5,9 @@ using Photon.Pun;
 using System;
 using UnityEngine.UIElements;
 
-public class gun : MonoBehaviourPunCallbacks
+public class gun : MonoBehaviourPun
 {
-    bool yes;
+    bool yes; //this means pickedup, bad name for a variable 
     private GameObject player;
     private GameObject hand; 
 
@@ -21,9 +21,7 @@ public class gun : MonoBehaviourPunCallbacks
     {
         if (yes)
         {
-            this.transform.position = player.gameObject.GetComponent<PlayerController>().getHand().position;
-            this.transform.SetParent(player.gameObject.GetComponent<PlayerController>().getHand());
-            hand = player.gameObject.GetComponent<PlayerController>().getHand().gameObject;
+           
         }
         else
         {
@@ -31,38 +29,45 @@ public class gun : MonoBehaviourPunCallbacks
         }    
     }
 
-    [PunRPC]
-    public void bePickedUp(int id)
+   /*
+    public void bePickedUp(int id, Vector3 position)
     {
-        if (photonView.IsMine)
-        {
-          
-            pickedUp(id);
-        }
+       // pickedUp(id);
+       
+        //this.gameObject.GetPhotonView().RPC("pickedUp", RpcTarget.All, photonView.ViewID, position);
     }
+    */
+     [PunRPC]
     private void pickedUp(int id)
     {
          player = PhotonView.Find(id).gameObject;
          yes = true;
+        
+        Transform hand = player.transform.GetChild(0).transform.GetChild(0);
+
+        //this.transform.SetParent(player.gameObject.GetComponent<PlayerController>().getHand());
+        //hand = player.gameObject.GetComponent<PlayerController>().getHand().gameObject;
         transform.rotation = hand.transform.rotation;
         this.transform.Rotate(0, 0, 180);
-        this.transform.SetParent(Camera.main.gameObject.transform);
+        this.transform.SetParent(hand);
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        
     }
-    [PunRPC]
+   /*
     public void beDropped()
     {
-        if (photonView.IsMine)
-        {
-            dropped();
-        }
+         //   dropped();
+       this.gameObject.GetPhotonView().RPC("dropped", RpcTarget.All);
     }
+    */
+    
+     [PunRPC]
     private void dropped()
     {
         this.gameObject.AddComponent<Rigidbody>();
         player = null;
         yes = false;
+        this.transform.SetParent(null);
     }
 
     

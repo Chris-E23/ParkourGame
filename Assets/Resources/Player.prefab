@@ -381,9 +381,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  groundDrag: 4
-  jumpForce: 9
-  jumpCooldown: 2
+  groundDrag: 7
+  jumpForce: 7
+  jumpCooldown: 0.5
   airMultiplier: 0.25
   walkSpeed: 2
   sprintSpeed: 5
@@ -416,12 +416,12 @@ MonoBehaviour:
   playerHolder: {fileID: 1874892689087039548}
   playerTag: {fileID: 522073319797505216}
   bodyParts:
-  - {fileID: 3996942867182371976}
-  - {fileID: 4618878765378089277}
-  - {fileID: 4119630365465015824}
-  - {fileID: 4119630366540743385}
-  - {fileID: 1511474327141897513}
-  - {fileID: 6986372730831934606}
+  - {fileID: 2786124849377138247}
+  - {fileID: 8409607418305051514}
+  - {fileID: 8336090132215305224}
+  - {fileID: 2209546743786780895}
+  - {fileID: 1132378710200018656}
+  - {fileID: 7376723066724704637}
   playerMenu: {fileID: 4564836751984476287}
 --- !u!114 &4455267296908063393
 MonoBehaviour:

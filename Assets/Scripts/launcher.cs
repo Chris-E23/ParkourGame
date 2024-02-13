@@ -55,6 +55,7 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
     }
     public void closeRB()
     {
+        
         CloseMenus();
         menuButtons.SetActive(true);
     }
@@ -63,6 +64,15 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
         Application.Quit();
     }
 
+    public void leaveRoom(){
+        
+        PhotonNetwork.LeaveRoom();
+        CloseMenus();
+    }
+    public override void OnLeftRoom(){
+
+
+    }
     public void screen()
     {
 

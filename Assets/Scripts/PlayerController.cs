@@ -46,14 +46,17 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [Header("UI")]
     [SerializeField] private GameObject playerMenu; 
     private Quaternion initialRotationPlayer, initialRotationPlayerModel; 
-   int playerNum; 
-   bool enabledMenu;
+    int playerNum; 
+    bool enabledMenu;
+    private bool isDead; 
+
+    
     private void Start()
     {
         
 
         enabledMenu = false; 
-       playerMenu.SetActive(false);
+        playerMenu.SetActive(false);
         cam = Camera.main;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -69,49 +72,27 @@ public class PlayerController : MonoBehaviourPunCallbacks
         initialRotationPlayer = this.transform.rotation; 
         initialRotationPlayerModel = playerModel.transform.rotation;
         playerTag.text = PhotonNetwork.NickName;
-         playerNum = PhotonNetwork.LocalPlayer.ActorNumber+1;
+        gun = null;
+        playerNum = PhotonNetwork.LocalPlayer.ActorNumber+1;
+        setColorAndTeam();
 
         if(playerNum%2 == 0){
-            foreach(GameObject obj in bodyParts){
-                obj.GetComponent<MeshRenderer>().material = red;
-            }
-            
             team = 2; 
         }
         else{
-            foreach(GameObject obj in bodyParts){
-                obj.GetComponent<MeshRenderer>().material = blue;
-            }
             team = 1;
         }
-
         roundManager.instance.playerSend(PhotonNetwork.NickName, photonView.ViewID);
         
-       
-       // lineRenderer = gameObject.AddComponent<LineRenderer>();
-        //lineRenderer.positionCount = 2; // Two points for start and end
-        //lineRenderer.startWidth = 0.1f; // Adjust the width of the line
-       // lineRenderer.endWidth = 0.1f;
 
     }
 
     private void Update()
     {
        
-       
         if (photonView.IsMine && !fallen)
         {
             
-
-            // Whenever the player touches the safe zone //
-            /*
-            if(this.transform.gameObject.GetComponent<CapsuleCollider>().tag == "safeZoneTeleport"){
-
-                this.gameObject.GetComponent<PhotonView>().RPC("teleportSafeZone", RpcTarget.All);
-                Debug.Log("Safe!");
-
-            }
-            */
             if(Input.GetKeyDown(KeyCode.Escape)){
                 Cursor.lockState = CursorLockMode.Locked;
                 playerMenu.SetActive(!enabledMenu);
@@ -121,8 +102,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
              if(cam.transform.position!=cameraPosition.position)
                 cam.transform.position = cameraPosition.position;
              //Input & Speed 
-            MyInput();
-            SpeedControl();
+            if(!isDead){
+
+                MyInput();
+                SpeedControl();
+            }
             
 
             //Animation triggers 
@@ -167,28 +151,28 @@ public class PlayerController : MonoBehaviourPunCallbacks
             //lineRenderer.SetPosition(1, endPos.transform.position);
        
             //Shooting
-            if(holding && Input.GetMouseButton(0))
+            if(holding && Input.GetMouseButton(0) && !isDead)
             {
                 shootTime -= Time.deltaTime; 
                 if(shootTime <=0)
                     shoot();
             }
 
-           if (Input.GetKey(KeyCode.F)) //Pushing functionality. Use F key to push. 
+           if (Input.GetKey(KeyCode.F) && !isDead) //Pushing functionality. Use F key to push. 
             {
                 pushTime -= Time.deltaTime;
                 if(pushTime <= 0)
                 {push();}
             }
 
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E) && !isDead)
             {pickup();} //Pickup function
 
-            if (Input.GetKey(KeyCode.G))
+            if (Input.GetKey(KeyCode.G) && !isDead)
             { drop(); } // dropping function 
 
             //Limited third person functionality. Doesn't work very well right now. 
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKeyDown(KeyCode.H) && !isDead)
             {
                 if (persp)
                     persp = false;
@@ -201,7 +185,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             { cam.transform.position = thirdPersonCam.transform.position; }
 
 
-           if (Input.GetKey(KeyCode.P))
+           if (Input.GetKey(KeyCode.P) && !isDead)
             { 
                 fallen = true; 
             
@@ -211,8 +195,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 rb.AddForce(transform.forward*2, ForceMode.Impulse);
              }
             }
-
-            
             
            
         }
@@ -308,7 +290,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
            if(hit.collider.gameObject.tag == "gun" && holding == false)
             {
-                hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All, photonView.ViewID);
+               // hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All, photonView.ViewID);
+               //hit.collider.gameObject.GetComponent<gun>().bePickedUp(photonView.ViewID, hand.transform.position);
+                 hit.collider.gameObject.GetPhotonView().RPC("pickedUp", RpcTarget.All, photonView.ViewID);
+
                 gun = hit.collider.gameObject;
                 holding = true; 
             }
@@ -316,7 +301,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     public void drop()
     {
-        hand.transform.GetChild(0).gameObject.GetPhotonView().RPC("beDropped", RpcTarget.All);
+        //hand.transform.GetChild(0).gameObject.GetPhotonView().RPC("beDropped", RpcTarget.All);
+            //hand.transform.GetChild(0).GetComponent<gun>().beDropped();
+            gun.GetPhotonView().RPC("dropped", RpcTarget.All);
+
         holding = false;
         gun = null;
     }
@@ -352,18 +340,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
     }
     private void ResetJump()
     {readyToJump = true;}
-    public Transform getHand()
-    {return hand.transform;}
-    public void shoot()
+      public void shoot()
     {
-        GameObject obj = PhotonNetwork.Instantiate("shootingObject", gun.transform.GetChild(2).transform.position, Quaternion.identity, 0);
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject", gun.transform.GetChild(1).transform.position, Quaternion.identity, 0);
         obj.GetPhotonView().RPC("shooting", RpcTarget.All, photonView.ViewID);
         shootTime = 0.4f;
     }
+    /*
   public Vector3 cameraVector(){
         Vector3 directionVector = endPos.transform.position - hand.transform.position;
         return directionVector;
   } 
+  */
+
   public bool getWallRunning(){
         return wallRunning;
   }
@@ -376,28 +365,40 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public int getTeam(){
     return team; 
   }
+  public void setDead(bool isDead){
+    this.isDead = isDead; 
+  }
   public void quit(){
-
-    /*if(PhotonNetwork.IsConnected){
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel("MainMenu");
-    }
-    */
-   
     PhotonNetwork.LeaveRoom();
+    SceneManager.LoadScene(0);
+    PhotonNetwork.LoadLevel("MainMenu");
     
+  }
+
+  //Function to set color
+  [PunRPC]
+  public void setColorAndTeam(){
+    if(playerNum%2 == 0){
+            foreach(GameObject obj in bodyParts){
+                obj.GetComponent<MeshRenderer>().material = blue;
+            }
+            team = 2; 
+        }
+        else{
+            foreach(GameObject obj in bodyParts){
+                obj.GetComponent<MeshRenderer>().material = red;
+            }
+            team = 1;
+        }
   }
 public override void OnLeftRoom()
 {
     SceneManager.LoadScene(0);
-   PhotonNetwork.LoadLevel("MainMenu");
-  
+    PhotonNetwork.LoadLevel("MainMenu");
     base.OnLeftRoom();
 }
   [PunRPC]
   public void teleportSafeZone(){
         this.transform.position = gameController.instance.safeZonePosition().transform.position;
-    
   }
 }

@@ -11,6 +11,10 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     
     public static roundManager instance; 
     int playerCount; 
+    int deadCount;
+
+    //Just handle the dead and safe people on the client-side
+    [SerializeField] string level;
    public void Awake(){
         instance = this; 
    }
@@ -23,16 +27,19 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
         NextMatch,
         TimerSync,
 
-        SafePlayerAdd
+        SafePlayerAdd,
+        DeadPlayerAdd
 
 
     }
 
-    public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
-    public List<GameObject> allPlayerObjects = new List<GameObject>();
-    public List<PlayerInfo> blueTeam = new List<PlayerInfo>();
-    public List<PlayerInfo> redTeam = new List<PlayerInfo>();
-
+    [SerializeField] private List<PlayerInfo> allPlayers = new List<PlayerInfo>();
+     [SerializeField] private List<GameObject> allPlayerObjects = new List<GameObject>();
+     [SerializeField] private List<PlayerInfo> blueTeam = new List<PlayerInfo>();
+     [SerializeField] private List<PlayerInfo> redTeam = new List<PlayerInfo>();
+    
+    
+    //CHANGE THESE FROM PUBLIC TO PRIVATE SERIALIZE FIELD 
     int safeCount; 
     
     private int index; 
@@ -83,7 +90,9 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
               case EventCodes.SafePlayerAdd:
                     receiveSafePlayer(data);
                     break;
-                    
+              case EventCodes.DeadPlayerAdd:
+                    receiveDeadPlayer(data);
+                    break;
               
             }
         }
@@ -162,15 +171,28 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
 
     }
 
-    public void receiveSafePlayer(object thing){
+    public void receiveSafePlayer(object nothing){
         safeCount++;
         //Debug.Log("player added to safe count");
-        if(allPlayers.Count > 1 && safeCount > (int)blueTeam.Count/2)
-            PhotonNetwork.LoadLevel("level2");
+        if(allPlayers.Count > 1 && safeCount > (int)redTeam.Count/2)
+            PhotonNetwork.LoadLevel(level);
         else if(safeCount == redTeam.Count && safeCount != 0)
-            PhotonNetwork.LoadLevel("level2");
+            PhotonNetwork.LoadLevel(level);
     
         
+    }
+
+    public void addDeadPlayer(){
+         PhotonNetwork.RaiseEvent((byte)EventCodes.DeadPlayerAdd, null, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); 
+    }
+
+    public void receiveDeadPlayer(object nothing){
+        deadCount++;
+        if(allPlayers.Count > 1 && deadCount > (int)redTeam.Count/2)
+            PhotonNetwork.LoadLevel(level);
+        else if(safeCount == redTeam.Count && safeCount != 0)
+            PhotonNetwork.LoadLevel(level);
+
     }
     
 

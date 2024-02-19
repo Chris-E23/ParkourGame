@@ -48,9 +48,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private Quaternion initialRotationPlayer, initialRotationPlayerModel; 
     int playerNum; 
     bool enabledMenu;
-    private bool isDead; 
+   
+    private bool isDead;
 
-    
+    [SerializeField] GameObject deadSpawn; 
+     
     private void Start()
     {
         
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         playerTag.text = PhotonNetwork.NickName;
         gun = null;
         playerNum = PhotonNetwork.LocalPlayer.ActorNumber+1;
+        
         setColorAndTeam();
 
         if(playerNum%2 == 0){
@@ -82,8 +85,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         else{
             team = 1;
         }
+      
         roundManager.instance.playerSend(PhotonNetwork.NickName, photonView.ViewID);
-        
+
 
     }
 
@@ -92,6 +96,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
        
         if (photonView.IsMine && !fallen)
         {
+            
+            if(isDead){
+                MyInput();
+                SpeedControl();
+
+                 
+            }
             
             if(Input.GetKeyDown(KeyCode.Escape)){
                 Cursor.lockState = CursorLockMode.Locked;
@@ -221,7 +232,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
    
     private void FixedUpdate()
     {
-        if (photonView.IsMine && !fallen && !enabledMenu)
+        if (photonView.IsMine && !fallen && !enabledMenu && !isDead)
         {
             MovePlayer();
             float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * mouseSens;
@@ -232,6 +243,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             cam.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
             orientation.rotation = Quaternion.Euler(0, yRot, 0);
         }
+       
     }
 
     private void MyInput()
@@ -244,7 +256,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 readyToJump = false;
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
-            else if(Input.GetKey(jumpKey) && coyoteTime > 0 && !justJumped && !isGrounded){
+            else if(Input.GetKey(jumpKey) && coyoteTime > 0 && !justJumped && !isGrounded && isDead){
                 justJumped = true; 
                 Jump();
             }
@@ -365,8 +377,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public int getTeam(){
     return team; 
   }
+  [PunRPC]
   public void setDead(bool isDead){
     this.isDead = isDead; 
+    transform.position = new Vector3(0.42f, 20.39f, 44.84f);
+
   }
   public void quit(){
     PhotonNetwork.LeaveRoom();
@@ -400,5 +415,11 @@ public override void OnLeftRoom()
   [PunRPC]
   public void teleportSafeZone(){
         this.transform.position = gameController.instance.safeZonePosition().transform.position;
+  }
+    [PunRPC]
+  public void makeClear(){
+ foreach(GameObject obj in bodyParts){
+                obj.GetComponent<MeshRenderer>().enabled = false;
+            }
   }
 }

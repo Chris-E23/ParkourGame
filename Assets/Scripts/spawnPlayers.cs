@@ -7,7 +7,12 @@ using System.Runtime.CompilerServices;
 public class spawnPlayers : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab, spawnPoint1, spawnPoint2;
-   
+    public static spawnPlayers instance;
+
+     private void Awake()
+    {
+        instance = this;
+    }
     private GameObject player;
     void Start()
     {

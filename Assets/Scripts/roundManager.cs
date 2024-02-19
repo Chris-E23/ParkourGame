@@ -14,7 +14,8 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     int deadCount;
 
     //Just handle the dead and safe people on the client-side
-    [SerializeField] string level;
+    private int level = 0;
+    
    public void Awake(){
         instance = this; 
    }
@@ -174,10 +175,10 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     public void receiveSafePlayer(object nothing){
         safeCount++;
         //Debug.Log("player added to safe count");
-        if(allPlayers.Count > 1 && safeCount > (int)redTeam.Count/2)
-            PhotonNetwork.LoadLevel(level);
-        else if(safeCount == redTeam.Count && safeCount != 0)
-            PhotonNetwork.LoadLevel(level);
+        if(allPlayers.Count > 1 && safeCount >= (int)redTeam.Count/2 - deadCount)
+            PhotonNetwork.LoadLevel(++level);
+        else if(safeCount == redTeam.Count-deadCount && safeCount != 0)
+            PhotonNetwork.LoadLevel(++level);
     
         
     }
@@ -188,7 +189,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
 
     public void receiveDeadPlayer(object nothing){
         deadCount++;
-        if(allPlayers.Count > 1 && deadCount > (int)redTeam.Count/2)
+        if(allPlayers.Count > 1 && deadCount > (int)redTeam.Count/2 )
             PhotonNetwork.LoadLevel(level);
         else if(safeCount == redTeam.Count && safeCount != 0)
             PhotonNetwork.LoadLevel(level);

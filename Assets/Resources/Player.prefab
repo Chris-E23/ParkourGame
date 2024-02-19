@@ -423,6 +423,7 @@ MonoBehaviour:
   - {fileID: 1132378710200018656}
   - {fileID: 7376723066724704637}
   playerMenu: {fileID: 4564836751984476287}
+  deadSpawn: {fileID: 0}
 --- !u!114 &4455267296908063393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +441,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
   - {fileID: -7251469458820673363}
   - {fileID: 113987619754825086}
@@ -559,7 +560,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 6461339801659921222}
   - {fileID: 1658196553518937010}
-  - {fileID: 4197663297654015051}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 2542617530512643608}
   - component: {fileID: 1658196553518937010}
   - component: {fileID: 1415252299099923335}
-  - component: {fileID: 4197663297654015051}
+  - component: {fileID: 4946165622927594476}
   m_Layer: 0
   m_Name: realplayermodel
   m_TagString: Untagged
@@ -961,10 +961,10 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: isMoving
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!23 &1415252299099923335
 MeshRenderer:
@@ -1008,7 +1008,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4197663297654015051
+--- !u!114 &4946165622927594476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1017,13 +1017,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2542617530512643611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 1658196553518937010}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2663676008753036178
 GameObject:
   m_ObjectHideFlags: 0

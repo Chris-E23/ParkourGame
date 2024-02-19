@@ -9,7 +9,7 @@ public class deathZone : MonoBehaviourPunCallbacks
         if(collision.gameObject.tag == "player" )
         {
              PhotonNetwork.Destroy(this.gameObject);
-             collision.gameObject.GetComponent<PlayerController>().setDead(true);
+             collision.gameObject.GetPhotonView().RPC("setDead", RpcTarget.All, true);
              roundManager.instance.addDeadPlayer();
         }
     }

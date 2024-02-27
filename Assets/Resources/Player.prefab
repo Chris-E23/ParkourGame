@@ -423,7 +423,6 @@ MonoBehaviour:
   - {fileID: 1132378710200018656}
   - {fileID: 7376723066724704637}
   playerMenu: {fileID: 4564836751984476287}
-  deadSpawn: {fileID: 0}
 --- !u!114 &4455267296908063393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,7 +440,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
   - {fileID: -7251469458820673363}
   - {fileID: 113987619754825086}
@@ -463,7 +462,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
-  m_UseLocal: 1
+  m_UseLocal: 0
 --- !u!136 &2684664483287344696
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -559,7 +558,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 6461339801659921222}
-  - {fileID: 1658196553518937010}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -896,7 +894,7 @@ GameObject:
   - component: {fileID: 2542617530512643608}
   - component: {fileID: 1658196553518937010}
   - component: {fileID: 1415252299099923335}
-  - component: {fileID: 4946165622927594476}
+  - component: {fileID: 3907906624381772841}
   m_Layer: 0
   m_Name: realplayermodel
   m_TagString: Untagged
@@ -1008,7 +1006,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4946165622927594476
+--- !u!114 &3907906624381772841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1025,7 +1023,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
   - {fileID: 1658196553518937010}
   sceneViewId: 0

@@ -13,6 +13,8 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     int playerCount; 
     int deadCount;
 
+
+
     //Just handle the dead and safe people on the client-side
     private int level = 0;
     
@@ -55,6 +57,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
 
     void Start()
     {
+       
         if(!PhotonNetwork.IsConnected){
             SceneManager.LoadScene(0);
         }
@@ -195,6 +198,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
             PhotonNetwork.LoadLevel(level);
 
     }
+   
     
 
 }

@@ -12,11 +12,12 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     public static roundManager instance; 
     int playerCount; 
     int deadCount;
+    
 
 
 
     //Just handle the dead and safe people on the client-side
-    private int level = 0;
+    private int level = 1;
     
    public void Awake(){
         instance = this; 
@@ -40,8 +41,8 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
      [SerializeField] private List<GameObject> allPlayerObjects = new List<GameObject>();
      [SerializeField] private List<PlayerInfo> blueTeam = new List<PlayerInfo>();
      [SerializeField] private List<PlayerInfo> redTeam = new List<PlayerInfo>();
-    
-    
+
+    [SerializeField] private Material red, blue;
     //CHANGE THESE FROM PUBLIC TO PRIVATE SERIALIZE FIELD 
     int safeCount; 
     
@@ -62,7 +63,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
             SceneManager.LoadScene(0);
         }
         else{
-            //playerSend(PhotonNetwork.NickName);
+           playerSend(PhotonNetwork.NickName);
             state = GameState.Playing;
         }
     }
@@ -103,11 +104,11 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     }
 
     
-    public void playerSend(string name, int playerId){
+    public void playerSend(string name) { //, int playerId){
         object[] package = new object[3];
         package[0] = name; 
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
-        package[2] = playerId;
+        package[2] = 0; //playerId;
         
         
         //send this to the masterclient and raise event 
@@ -118,11 +119,13 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     public void playerReceive(object[] dataReceived){
         PlayerInfo player = new PlayerInfo((string)dataReceived[0], (int)dataReceived[1], (int)dataReceived[2]);
         allPlayers.Add(player);
-        if(player.team == 1){
+        if(player.actor%2 == 0){
             blueTeam.Add(player);
-        }
+           
+          }
         else{
             redTeam.Add(player);
+          
         }
 
         foreach(PlayerInfo playerInf in blueTeam) {
@@ -140,7 +143,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
             object[] piece = new object[4];
             piece[0] = allPlayers[i].name;
             piece[1] = allPlayers[i].actor;
-            piece[2] = allPlayers[i].team;
+           piece[2] = allPlayers[i].team;
             package[i+1] = piece; 
         }
 
@@ -178,10 +181,24 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     public void receiveSafePlayer(object nothing){
         safeCount++;
         //Debug.Log("player added to safe count");
-        if(allPlayers.Count > 1 && safeCount >= (int)redTeam.Count/2 - deadCount)
-            PhotonNetwork.LoadLevel(++level);
-        else if(safeCount == redTeam.Count-deadCount && safeCount != 0)
-            PhotonNetwork.LoadLevel(++level);
+        if (allPlayers.Count > 1 && safeCount >= (int)redTeam.Count / 2 - deadCount)
+        {
+            PhotonNetwork.LoadLevel(level+1);
+            level++;
+        }
+           
+        else if (safeCount == redTeam.Count - deadCount && safeCount != 0)
+        {
+            PhotonNetwork.LoadLevel(level);
+            level++;
+        }
+            
+        else if (redTeam.Count == 1 && safeCount == 1)
+        {
+            PhotonNetwork.LoadLevel(level);
+            level++;
+        }
+     
     
         
     }
@@ -214,7 +231,7 @@ public class PlayerInfo
     {
         this.name = name;
         this.actor = actor;
-        this.team = team;
+       this.team = team;
       
     }
 }

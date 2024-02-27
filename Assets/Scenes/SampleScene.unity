@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028358, g: 0.22571376, b: 0.30692235, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3510,6 +3510,8 @@ MonoBehaviour:
   allPlayerObjects: []
   blueTeam: []
   redTeam: []
+  red: {fileID: 2100000, guid: 7d5b16fbe6e5b449ba30e10dae093485, type: 2}
+  blue: {fileID: 2100000, guid: 292b5c884432a4019813630d27859297, type: 2}
   state: 0
 --- !u!1 &2105299025
 GameObject:

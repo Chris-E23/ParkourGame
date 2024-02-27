@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028358, g: 0.22571376, b: 0.30692235, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6897,7 +6897,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chris's Super Fun Gaming Opportunity
+  m_text: Parkour Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56f493f88d523f24b95c84a2ad1d1a0a, type: 2}
   m_sharedMaterial: {fileID: 2470851467665127419, guid: 56f493f88d523f24b95c84a2ad1d1a0a, type: 2}

@@ -6,6 +6,8 @@ using Photon.Pun;
 using UnityEngine.Experimental.Rendering;
 using System.Runtime.CompilerServices;
 using UnityEngine.SceneManagement;
+using System;
+
 public class PlayerController : MonoBehaviourPunCallbacks
 {
 
@@ -35,16 +37,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private bool wallRunning;
     private Vector3 dir; 
     private GameObject gun; 
-    [SerializeField] private int team; 
     private bool justJumped;
     [SerializeField] private Material red, blue;
     [SerializeField] private Animator playeranimator;
     
     [SerializeField] private Transform playerHolder; 
     [SerializeField] private TMP_Text playerTag; 
-    [SerializeField] private GameObject[] bodyParts; 
     [Header("UI")]
-    [SerializeField] private GameObject playerMenu; 
+    [SerializeField] private GameObject playerMenu;
+    [SerializeField] private GameObject[] bodies; 
     private Quaternion initialRotationPlayer, initialRotationPlayerModel; 
     int playerNum; 
     bool enabledMenu;
@@ -73,11 +74,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         initialRotationPlayer = this.transform.rotation; 
         initialRotationPlayerModel = playerModel.transform.rotation;
         gun = null;
-        playerNum = photonView.Owner.ActorNumber;
-        if(photonView.IsMine)
+       // if(photonView.IsMine)
          this.gameObject.GetPhotonView().RPC("setColorAndTeam", RpcTarget.All);
-        
-         roundManager.instance.playerSend(PhotonNetwork.NickName, photonView.ViewID);
+        // roundManager.instance.playerSend(PhotonNetwork.NickName,photonView.ViewID);
 
 
     }
@@ -365,9 +364,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public Vector3 getDir(){
     return dir; 
   }
-  public int getTeam(){
-    return team; 
-  }
+  
   [PunRPC]
   public void setDead(bool isDead){
     this.isDead = isDead; 
@@ -385,26 +382,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
   [PunRPC]
   public void setColorAndTeam(){
     
-    playerTag.text = photonView.Owner.NickName;  
-
-    if(playerNum%2 == 0){
-            foreach(GameObject obj in bodyParts){
-                //if(obj.transform.parent.transform.parent.transform.parent.transform.parent.transform.parent.transform.parent.gameObject.GetComponent<PhotonView>().IsMine)
-                    obj.GetComponent<MeshRenderer>().material = blue;
-                    
-                
-                    
-
-            }
-            team = 2; 
-        }
-    else{
-            foreach(GameObject obj in bodyParts){
-              //if(obj.transform.parent.transform.parent.transform.parent.transform.parent.transform.parent.transform.parent.gameObject.GetComponent<PhotonView>().IsMine)
-                    obj.GetComponent<MeshRenderer>().material = red;
-            }
-            team = 1;
-        }
+    playerTag.text = photonView.Owner.NickName; 
+    bodies[photonView.Owner.ActorNumber % 2].SetActive(true);
+    
     
   }
 public override void OnLeftRoom()
@@ -419,8 +399,10 @@ public override void OnLeftRoom()
   }
     [PunRPC]
   public void makeClear(){
- foreach(GameObject obj in bodyParts){
-                obj.GetComponent<MeshRenderer>().enabled = false;
-            }
+    foreach(GameObject body in bodies)
+        {
+            body.SetActive(false);
+        }
   }
+   
 }

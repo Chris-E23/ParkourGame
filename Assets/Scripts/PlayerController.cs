@@ -305,7 +305,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         //hand.transform.GetChild(0).gameObject.GetPhotonView().RPC("beDropped", RpcTarget.All);
             //hand.transform.GetChild(0).GetComponent<gun>().beDropped();
-            //gun.GetPhotonView().RPC("dropped", RpcTarget.All);
+            gun.GetPhotonView().RPC("dropped", RpcTarget.All);
 
         holding = false;
         gun = null;

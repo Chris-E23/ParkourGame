@@ -47,9 +47,11 @@ public class gun : MonoBehaviourPun
 
         //this.transform.SetParent(player.gameObject.GetComponent<PlayerController>().getHand());
         //hand = player.gameObject.GetComponent<PlayerController>().getHand().gameObject;
+        this.transform.Rotate(-this.transform.rotation.x, -this.transform.rotation.y, -this.transform.rotation.z);
         transform.rotation = hand.transform.rotation;
-        this.transform.Rotate(0, 0, 180);
+      this.transform.Rotate(0,0,180);
         this.transform.SetParent(hand);
+        this.transform.position = hand.transform.position;
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        
     }

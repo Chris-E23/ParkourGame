@@ -35,9 +35,9 @@ public class shootingObject : MonoBehaviourPunCallbacks
         
     }
     [PunRPC]
-   public void shooting(int photonID)
+   public void shooting(Vector3 rot)
     {
-        Vector3 dir = PhotonView.Find(photonID).gameObject.transform.forward;
+        Vector3 dir = rot*100;
        this.gameObject.GetComponent<Rigidbody>().AddForce(dir, ForceMode.Force);
     }   
 }

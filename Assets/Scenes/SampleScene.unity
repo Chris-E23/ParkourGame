@@ -1828,6 +1828,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -967010982325099675, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_SynchronizeRotation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1809759350020993005, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: m_Name
       value: gun (1)
@@ -3008,6 +3012,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -967010982325099675, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_SynchronizePosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -967010982325099675, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
+      propertyPath: m_SynchronizeRotation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1809759350020993005, guid: 56a5fa8f8df491c4583f9f0952f08399, type: 3}
       propertyPath: m_Name
       value: gun

@@ -294,7 +294,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                // hit.collider.gameObject.GetPhotonView().RPC("bePickedUp", RpcTarget.All, photonView.ViewID);
                //hit.collider.gameObject.GetComponent<gun>().bePickedUp(photonView.ViewID, hand.transform.position);
-                 hit.collider.gameObject.GetPhotonView().RPC("pickedUp", RpcTarget.All, photonView.ViewID);
+                 hit.collider.gameObject.GetPhotonView().RPC("pickedUp", RpcTarget.All, this.transform.forward, photonView.ViewID);
 
                 gun = hit.collider.gameObject;
                 holding = true; 
@@ -344,8 +344,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {readyToJump = true;}
       public void shoot()
     {
-        GameObject obj = PhotonNetwork.Instantiate("shootingObject", gun.transform.GetChild(1).transform.position, Quaternion.identity, 0);
-        obj.GetPhotonView().RPC("shooting", RpcTarget.All, photonView.ViewID);
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject", gun.transform.GetChild(2).transform.position, Quaternion.identity, 0);
+        obj.GetPhotonView().RPC("shooting", RpcTarget.All, this.transform.forward);
         shootTime = 0.4f;
     }
     /*

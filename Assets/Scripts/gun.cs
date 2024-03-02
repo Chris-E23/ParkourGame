@@ -38,20 +38,20 @@ public class gun : MonoBehaviourPun
     }
     */
      [PunRPC]
-    private void pickedUp(int id)
-    {
-         player = PhotonView.Find(id).gameObject;
-         yes = true;
-        
+    private void pickedUp(Vector3 rot, int id)
+    {   //this.transform.Rotate(-this.transform.rotation.x, -this.transform.rotation.y, -this.transform.rotation.z);
+         //this.transform.Rotate(0,0,180);
+         
+        player = PhotonView.Find(id).gameObject;
         Transform hand = player.transform.GetChild(0).transform.GetChild(0);
-
-        //this.transform.SetParent(player.gameObject.GetComponent<PlayerController>().getHand());
-        //hand = player.gameObject.GetComponent<PlayerController>().getHand().gameObject;
-        this.transform.Rotate(-this.transform.rotation.x, -this.transform.rotation.y, -this.transform.rotation.z);
-        transform.rotation = hand.transform.rotation;
-      this.transform.Rotate(0,0,180);
+        this.gameObject.GetComponent<PhotonView>().enabled = false; 
+         yes = true;
+         //transform.localPosition = Vector3.zero; 
+        // transform.localRotation = Quaternion.Euler(Vector3.zero);
+         //transform.localScale = Vector3.one;
+     this.transform.position = hand.transform.position;
+        transform.rotation = Quaternion.Euler(rot);
         this.transform.SetParent(hand);
-        this.transform.position = hand.transform.position;
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        
     }
@@ -70,6 +70,7 @@ public class gun : MonoBehaviourPun
         player = null;
         yes = false;
         this.transform.SetParent(null);
+        this.gameObject.GetComponent<PhotonView>().enabled = true;
     }
 
     

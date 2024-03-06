@@ -189,13 +189,13 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
            
         else if (safeCount == redTeam.Count - deadCount && safeCount != 0)
         {
-            PhotonNetwork.LoadLevel(level);
+            PhotonNetwork.LoadLevel(level+1);
             level++;
         }
             
         else if (redTeam.Count == 1 && safeCount == 1)
         {
-            PhotonNetwork.LoadLevel(level);
+            PhotonNetwork.LoadLevel(level+1);
             level++;
         }
      
@@ -204,7 +204,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     }
 
     public void addDeadPlayer(){
-         PhotonNetwork.RaiseEvent((byte)EventCodes.DeadPlayerAdd, null, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); 
+         //PhotonNetwork.RaiseEvent((byte)EventCodes.DeadPlayerAdd, null, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); 
     }
 
     public void receiveDeadPlayer(object nothing){

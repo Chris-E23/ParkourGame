@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private GameObject gun; 
     private bool justJumped;
     [SerializeField] private Material red, blue;
-    [SerializeField] private Animator playeranimator;
+     private Animator playeranimator;
     
     [SerializeField] private Transform playerHolder; 
     [SerializeField] private TMP_Text playerTag; 
@@ -240,13 +240,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
-            if (Input.GetKey(jumpKey) && readyToJump && isGrounded)
+           
+            if (Input.GetKey(jumpKey) && readyToJump && isGrounded && !isDead)
             {
                 Jump();
                 readyToJump = false;
                 Invoke(nameof(ResetJump), jumpCooldown);
             }
-            else if(Input.GetKey(jumpKey) && coyoteTime > 0 && !justJumped && !isGrounded && isDead){
+            else if(Input.GetKey(jumpKey) && coyoteTime > 0 && !justJumped && !isGrounded && !isDead){
                 justJumped = true; 
                 Jump();
             }
@@ -369,6 +370,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
   public void setDead(bool isDead){
     this.isDead = isDead; 
     transform.position = new Vector3(0.42f, 20.39f, 44.84f);
+   gameObject.GetComponent<Rigidbody>().useGravity = false;
 
   }
   public void quit(){
@@ -384,12 +386,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
     
     playerTag.text = photonView.Owner.NickName; 
     bodies[photonView.Owner.ActorNumber % 2].SetActive(true);
-    
+    playeranimator = bodies[photonView.Owner.ActorNumber % 2].gameObject.GetComponent<Animator>();
+    for(int i = 0; i < bodies.Length; i++){
+        if(i != photonView.Owner.ActorNumber % 2){
+            bodies[i].gameObject.GetComponent<PhotonView>().enabled = false;
+        }
+
+    }
+    if(photonView.Owner.ActorNumber % 2 == 0){
+        this.gameObject.tag = "player2";
+    }
     
   }
   [PunRPC]
-  public void addExplosionForce(){
-    this.GetComponent<Rigidbody>().AddExplosionForce(1000f, this.transform.position, 15);
+  public void addExplosionForce(Vector3 objPos){
+    this.GetComponent<Rigidbody>().AddExplosionForce(100f, objPos, 15);
   }
 public override void OnLeftRoom()
 {

@@ -192,7 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   groundDrag: 7
-  jumpForce: 9
+  jumpForce: 15
   jumpCooldown: 0.5
   airMultiplier: 0.25
   walkSpeed: 2
@@ -221,7 +221,6 @@ MonoBehaviour:
     m_Bits: 64
   red: {fileID: 2100000, guid: 292b5c884432a4019813630d27859297, type: 2}
   blue: {fileID: 2100000, guid: 7d5b16fbe6e5b449ba30e10dae093485, type: 2}
-  playeranimator: {fileID: 2542617530512643608}
   playerHolder: {fileID: 1874892689087039548}
   playerTag: {fileID: 522073319797505216}
   playerMenu: {fileID: 4564836751984476287}
@@ -1370,11 +1369,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a7beac726925eb4ba34e56ce47e8858, type: 3}
---- !u!95 &2542617530512643608 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7500792678660971748, guid: 5a7beac726925eb4ba34e56ce47e8858, type: 3}
-  m_PrefabInstance: {fileID: 5427147748427369212}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2542617530512643611 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7500792678660971751, guid: 5a7beac726925eb4ba34e56ce47e8858, type: 3}

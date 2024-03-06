@@ -21,17 +21,25 @@ public class shootingObject : MonoBehaviourPunCallbacks
                 Collider[] objects = Physics.OverlapSphere(this.transform.position, 15);
                 foreach(Collider h in objects){
                     Rigidbody r = h.gameObject.GetComponent<Rigidbody>();
-                    if(r!=null && h.gameObject.tag != "player")
-                        r.AddExplosionForce(1000f, this.transform.position, 15);
+                    if(r!=null && h.gameObject.tag != "player"){
+                        r.AddExplosionForce(100f, this.transform.position, 15);
+                          Destroy(this.gameObject);
+                    }
                     else if(h.gameObject.tag == "player"){
-                        h.gameObject.GetComponent<PhotonView>().RPC("addExplosionForce", RpcTarget.All);
+                        h.gameObject.GetComponent<PhotonView>().RPC("addExplosionForce", RpcTarget.All, this.transform.position);
+                          Destroy(this.gameObject);
                     }
                 }
                 
                
             }
-             Destroy(this.gameObject);
-              Destroy(this);
+            else if(d.gameObject.tag == "player"){
+                 d.gameObject.GetComponent<PhotonView>().RPC("addExplosionForce", RpcTarget.All,  this.transform.position);
+                 Destroy(this.gameObject);
+
+            }
+           
+              
             }
 
         }

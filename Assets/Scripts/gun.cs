@@ -41,17 +41,16 @@ public class gun : MonoBehaviourPun
     private void pickedUp(Vector3 rot, int id)
     {   //this.transform.Rotate(-this.transform.rotation.x, -this.transform.rotation.y, -this.transform.rotation.z);
          //this.transform.Rotate(0,0,180);
-         
         player = PhotonView.Find(id).gameObject;
         Transform hand = player.transform.GetChild(0).transform.GetChild(0);
-        this.gameObject.GetComponent<PhotonView>().enabled = false; 
-         yes = true;
-         //transform.localPosition = Vector3.zero; 
-        // transform.localRotation = Quaternion.Euler(Vector3.zero);
-         //transform.localScale = Vector3.one;
-     this.transform.position = hand.transform.position;
-        transform.rotation = Quaternion.Euler(rot);
+        yes = true;
         this.transform.SetParent(hand);
+        transform.localPosition = Vector3.zero; 
+        transform.localRotation = Quaternion.Euler(Vector3.zero);
+        transform.localScale = Vector3.one;
+        this.transform.position = hand.transform.position;
+        this.transform.Rotate(0, 0, 180);
+        this.gameObject.GetComponent<PhotonView>().enabled = false; 
         Destroy(this.gameObject.GetComponent<Rigidbody>());
        
     }

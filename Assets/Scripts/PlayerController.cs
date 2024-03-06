@@ -344,16 +344,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {readyToJump = true;}
       public void shoot()
     {
-        GameObject obj = PhotonNetwork.Instantiate("shootingObject", gun.transform.GetChild(2).transform.position, Quaternion.identity, 0);
-        obj.GetPhotonView().RPC("shooting", RpcTarget.All, this.transform.forward);
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject", Camera.main.gameObject.transform.GetChild(0).position, Quaternion.identity, 0);
+        obj.GetPhotonView().RPC("shooting", RpcTarget.All, Camera.main.gameObject.transform.GetChild(0).transform.forward);
         shootTime = 0.4f;
     }
-    /*
+    
   public Vector3 cameraVector(){
-        Vector3 directionVector = endPos.transform.position - hand.transform.position;
+        Vector3 directionVector =  Camera.main.gameObject.transform.position - hand.transform.position;
         return directionVector;
   } 
-  */
+  
 
   public bool getWallRunning(){
         return wallRunning;
@@ -386,6 +386,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
     bodies[photonView.Owner.ActorNumber % 2].SetActive(true);
     
     
+  }
+  [PunRPC]
+  public void addExplosionForce(){
+    this.GetComponent<Rigidbody>().AddExplosionForce(1000f, this.transform.position, 15);
   }
 public override void OnLeftRoom()
 {

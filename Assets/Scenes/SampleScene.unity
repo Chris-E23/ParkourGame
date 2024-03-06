@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028358, g: 0.22571376, b: 0.30692235, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -229,7 +229,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0cee770fada334f59881d18b4978bfd1, type: 2}
+  - {fileID: 2100000, guid: a6b89c48a06070e4bbc7c6696568673c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1489,7 +1489,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0cee770fada334f59881d18b4978bfd1, type: 2}
+  - {fileID: 2100000, guid: a6b89c48a06070e4bbc7c6696568673c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1594,7 +1594,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0cee770fada334f59881d18b4978bfd1, type: 2}
+  - {fileID: 2100000, guid: a6b89c48a06070e4bbc7c6696568673c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1661,7 +1661,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41452
+  m_Name: pb_Mesh24940
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2439,7 +2439,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41136
+  m_Name: pb_Mesh24724
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -3357,7 +3357,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0cee770fada334f59881d18b4978bfd1, type: 2}
+  - {fileID: 2100000, guid: a6b89c48a06070e4bbc7c6696568673c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3835,7 +3835,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0cee770fada334f59881d18b4978bfd1, type: 2}
+  - {fileID: 2100000, guid: a6b89c48a06070e4bbc7c6696568673c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5379,6 +5379,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: safeZoneTeleport
       objectReference: {fileID: 0}
+    - target: {fileID: 4993250706131751774, guid: 2acdae496e5104dd7b4f107d3be2a879, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a6b89c48a06070e4bbc7c6696568673c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

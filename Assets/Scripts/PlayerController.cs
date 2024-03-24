@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     [SerializeField] private Transform orientation, thirdPersonCam;
     float horizontalInput, verticalInput;
     Vector3 moveDirection;
-    [SerializeField] private Rigidbody rb;
+    private Rigidbody rb;
     [Header("Camera Stuff")]
     [SerializeField] private Transform cameraPosition;
     Camera cam;
@@ -86,14 +86,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         
         if (photonView.IsMine && !fallen)
         {
-          
-            if(isDead){
                 MyInput();
                 SpeedControl();
 
-                 
-            }
-            
             if(Input.GetKeyDown(KeyCode.Escape)){
                 Cursor.lockState = CursorLockMode.Locked;
                 playerMenu.SetActive(!enabledMenu);
@@ -103,12 +98,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
              if(cam.transform.position!=cameraPosition.position)
                 cam.transform.position = cameraPosition.position;
              //Input & Speed 
-            if(!isDead){
-
-                MyInput();
-                SpeedControl();
-            }
             
+
 
             //Animation triggers 
             if(moveDirection != Vector3.zero)
@@ -222,7 +213,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
    
     private void FixedUpdate()
     {
-        if (photonView.IsMine && !fallen && !enabledMenu && !isDead)
+        if (photonView.IsMine && !fallen && !enabledMenu)
         {
             MovePlayer();
             float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * mouseSens;
@@ -258,8 +249,14 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-            if (isGrounded)
+            if(!isDead)
+                moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            if(isDead){
+                  moveDirection = cam.transform.forward * verticalInput + cam.transform.right * horizontalInput;
+
+            }
+                 
+            if (isGrounded && !isDead)
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 { rb.AddForce(moveDirection.normalized * sprintSpeed * 10f, ForceMode.Force); }
@@ -268,7 +265,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
             }
-            else if (!isGrounded)
+            else if (!isGrounded && !isDead)
                 rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
         }
     }
@@ -369,9 +366,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
   [PunRPC]
   public void setDead(bool isDead){
     this.isDead = isDead; 
-    transform.position = new Vector3(0.42f, 20.39f, 44.84f);
-   gameObject.GetComponent<Rigidbody>().useGravity = false;
-
+    this.transform.position = new Vector3(0.42f, 20.39f, 44.84f);
+    gameObject.GetComponent<Rigidbody>().useGravity = false;
+    
+  }
+  public bool deadValue(){
+    return isDead;
   }
   public void quit(){
     PhotonNetwork.LeaveRoom();

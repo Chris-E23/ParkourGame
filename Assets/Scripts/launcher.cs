@@ -33,7 +33,11 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
     }
     public void startGame()
     {
+        //PhotonNetwork.CurrentRoom.isOpen = false; 
+         PhotonNetwork.CurrentRoom.IsVisible = false;
+
         PhotonNetwork.LoadLevel("SampleScene");
+
     
     }
     void CloseMenus()
@@ -144,6 +148,7 @@ public class launcher : MonoBehaviourPunCallbacks //use this when using PUN
 
         for (int i = 0; i < roomList.Count; i++)
         {
+            
             if (roomList[i].PlayerCount != roomList[i].MaxPlayers && !roomList[i].RemovedFromList)
             {
                 RoomButton newRoom = Instantiate(defaultrb, defaultrb.transform.parent); //adds it to the list 

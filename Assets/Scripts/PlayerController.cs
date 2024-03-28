@@ -231,7 +231,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
-           
+            if(Mathf.Abs(horizontalInput) == 0 && Math.Abs(verticalInput) == 0 && isDead){
+                   rb.velocity = new Vector3(0, 0, 0);
+            }
             if (Input.GetKey(jumpKey) && readyToJump && isGrounded && !isDead)
             {
                 Jump();
@@ -242,6 +244,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 justJumped = true; 
                 Jump();
             }
+            if(Input.GetKey(jumpKey) && isDead){
+                  this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y+0.01f, this.transform.position.z);
+            }
+            else if(Input.GetKey(KeyCode.LeftShift) && isDead){
+                this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y-0.01f, this.transform.position.z);
+            }
             
     }
 
@@ -249,12 +257,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine)
         {
-            if(!isDead)
-                moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-            if(isDead){
-                  moveDirection = cam.transform.forward * verticalInput + cam.transform.right * horizontalInput;
-
-            }
+            moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+          
                  
             if (isGrounded && !isDead)
             {
@@ -265,14 +269,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
             }
+            
             else if (!isGrounded && !isDead)
                 rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+
+            if(isDead){
+                rb.AddForce(moveDirection.normalized * sprintSpeed * 10f, ForceMode.Force);
+            }
         }
     }
 
     private void SpeedControl()
     {
-        if (photonView.IsMine)
+        if (photonView.IsMine && !isDead)
         {
             Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             if (flatVel.magnitude > moveSpeed)
@@ -296,6 +305,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
                 gun = hit.collider.gameObject;
                 holding = true; 
+            }
+
+            if(hit.collider.gameObject.tag == "button"){
+                hit.collider.gameObject.GetPhotonView().RPC("shoot", RpcTarget.All); 
             }
         }
     }
@@ -364,9 +377,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
   }
   
   [PunRPC]
-  public void setDead(bool isDead){
-    this.isDead = isDead; 
-    this.transform.position = new Vector3(0.42f, 20.39f, 44.84f);
+    public void setDead(){
+    isDead = true; 
+    //this.transform.position = new Vector3(0.42f, 20.39f, 44.84f);
     gameObject.GetComponent<Rigidbody>().useGravity = false;
     
   }

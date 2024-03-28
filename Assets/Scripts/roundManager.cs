@@ -13,8 +13,8 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     int playerCount; 
     int deadCount;
     
-
-
+    private float matchLength = 180f;
+    private float currentMatchTime;
 
     //Just handle the dead and safe people on the client-side
     private int level = 1;
@@ -61,6 +61,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
        
         if(!PhotonNetwork.IsConnected){
             SceneManager.LoadScene(0);
+            
         }
         else{
            playerSend(PhotonNetwork.NickName);
@@ -200,6 +201,18 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
         }
      
     
+        
+    }
+    public void setUpTimer(){
+
+        if(matchLength > 0){
+            currentMatchTime = matchLength; 
+            UpdateTimerDisplay();
+
+        }
+    }
+    public void UpdateTimerDisplay(){
+        var timeToDisplay = System.TimeSpan.FromSeconds(currentMatchTime);
         
     }
 

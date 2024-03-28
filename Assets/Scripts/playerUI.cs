@@ -8,12 +8,12 @@ using TMPro;
 
 public class playerUI : MonoBehaviour
 {
-
+    public playerUI instance;
     public TMP_Text timerText; 
     // Start is called before the first frame update
     void Start()
     {
-      Cursor.lockState = CursorLockMode.None;
+      instance = this;
     }
 
     // Update is called once per frame

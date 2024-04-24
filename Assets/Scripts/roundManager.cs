@@ -12,7 +12,6 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     public static roundManager instance; 
     int playerCount; 
     int deadCount;
-    
     private float matchLength = 180f;
     private float currentMatchTime;
 
@@ -67,6 +66,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
            playerSend(PhotonNetwork.NickName);
             state = GameState.Playing;
         }
+        setUpTimer();
     }
     public override void OnEnable(){//add as a listener for photon events?
         PhotonNetwork.AddCallbackTarget(this);
@@ -78,9 +78,34 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
     void Update()
     {
         
-       
+       if(currentMatchTime > 0f && state == GameState.Playing){
+        currentMatchTime -= Time.deltaTime;
+        if(currentMatchTime<=0){
+            currentMatchTime = 0f; 
+            state = GameState.Ending; 
+
+            if(PhotonNetwork.IsMasterClient){
+                ListPlayersSend();
+                StateCheck();
+            }
+        }
+        UpdateTimerDisplay();
+       }
     }
-  
+    void StateCheck(){
+        if(state == GameState.Ending){
+            EndGame();
+        }
+    }
+    void EndGame(){
+        state = GameState.Ending;
+
+        if(PhotonNetwork.IsMasterClient){
+            PhotonNetwork.DestroyAll();
+
+        }
+        //set the endscreen to be true here 
+    }
     
     public void OnEvent(EventData photonEvent){ // do something whenever an event is called through the photon network. 
         if(photonEvent.Code < 200){
@@ -99,6 +124,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
               case EventCodes.DeadPlayerAdd:
                     receiveDeadPlayer(data);
                     break;
+           
               
             }
         }
@@ -211,26 +237,27 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
 
         }
     }
+    
     public void UpdateTimerDisplay(){
         var timeToDisplay = System.TimeSpan.FromSeconds(currentMatchTime);
+       playerUI.instance.timerText.text = timeToDisplay.Minutes.ToString("00") + ":" + timeToDisplay.Seconds.ToString("00");
         
     }
 
     public void addDeadPlayer(){
-         //PhotonNetwork.RaiseEvent((byte)EventCodes.DeadPlayerAdd, null, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); 
+         PhotonNetwork.RaiseEvent((byte)EventCodes.DeadPlayerAdd, null, new RaiseEventOptions{Receivers = ReceiverGroup.MasterClient}, new SendOptions {Reliability = true}); 
     }
 
     public void receiveDeadPlayer(object nothing){
         deadCount++;
         if(allPlayers.Count > 1 && deadCount > (int)redTeam.Count/2 )
-            PhotonNetwork.LoadLevel(level);
+            PhotonNetwork.LoadLevel(level+1);
         else if(safeCount == redTeam.Count && safeCount != 0)
-            PhotonNetwork.LoadLevel(level);
+            PhotonNetwork.LoadLevel(level+1);
 
     }
    
-    
-
+   
 }
 
 [System.Serializable]

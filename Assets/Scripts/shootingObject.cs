@@ -27,6 +27,7 @@ public class shootingObject : MonoBehaviourPunCallbacks
                     }
                     else if(h.gameObject.tag == "player"){
                         h.gameObject.GetComponent<PhotonView>().RPC("addExplosionForce", RpcTarget.All, this.transform.position);
+                        PhotonNetwork.Destroy(this.gameObject.GetComponent<PhotonView>());
                           Destroy(this.gameObject);
                     }
                 }

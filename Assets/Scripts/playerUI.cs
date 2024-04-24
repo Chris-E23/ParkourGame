@@ -4,19 +4,27 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Photon.Pun; 
+using UnityEngine.SceneManagement;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
-
-public class playerUI : MonoBehaviour
+public class playerUI :  MonoBehaviour
 {
-    public playerUI instance;
+    public static playerUI instance;
     public TMP_Text timerText; 
-    // Start is called before the first frame update
+  private void Awake(){
+
+    instance = this; 
+  }
     void Start()
     {
-      instance = this;
+      
+      
+      
+    
     }
 
-    // Update is called once per frame
     void Update()
     {
      

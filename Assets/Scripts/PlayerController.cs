@@ -90,8 +90,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 SpeedControl();
 
             if(Input.GetKeyDown(KeyCode.Escape)){
-                Cursor.lockState = CursorLockMode.Locked;
+                
+                if(Cursor.lockState == CursorLockMode.Locked){
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else if(Cursor.lockState == CursorLockMode.None){
+                      Cursor.lockState = CursorLockMode.Locked;
+                }
                 playerMenu.SetActive(!enabledMenu);
+                
                 enabledMenu = !enabledMenu;
             }
              isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.5f, whatIsGround);
@@ -306,9 +313,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 gun = hit.collider.gameObject;
                 holding = true; 
             }
-
-            if(hit.collider.gameObject.tag == "button"){
-                hit.collider.gameObject.GetPhotonView().RPC("shoot", RpcTarget.All); 
+            else if(hit.collider.gameObject.tag == "button"){
+                hit.collider.gameObject.GetComponent<CannonScript>().shoot();
             }
         }
     }

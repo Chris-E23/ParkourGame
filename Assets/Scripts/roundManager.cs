@@ -63,6 +63,7 @@ public class roundManager : MonoBehaviourPunCallbacks, IOnEventCallback //use th
             
         }
         else{
+            
            playerSend(PhotonNetwork.NickName);
             state = GameState.Playing;
         }

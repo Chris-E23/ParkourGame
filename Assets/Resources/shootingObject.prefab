@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 3660982815885570787}
   - component: {fileID: 2945443205959178729}
   - component: {fileID: 4615772667558642673}
-  - component: {fileID: -2760957200665710087}
+  - component: {fileID: -3340119488293608301}
+  - component: {fileID: 8038789841503242071}
   m_Layer: 7
   m_Name: shootingObject
   m_TagString: Untagged
@@ -149,7 +150,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d9aaff56ef65774c92281d2f0f2ae42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-2760957200665710087
+--- !u!114 &-3340119488293608301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2411651387746445682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 2
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 8038789841503242071}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &8038789841503242071
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

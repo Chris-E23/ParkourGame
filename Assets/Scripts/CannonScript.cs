@@ -76,7 +76,10 @@ public class CannonScript : MonoBehaviourPunCallbacks, IOnEventCallback
     if(curCoolDown <= 0){
         foreach(GameObject cannon in canList){
             //cannon.GetPhotonView().RPC("shoot", RpcTarget.All, this.transform.forward);
-        cannon.gameObject.GetComponent<cannonObject>().shoot(this.transform.forward);
+        // cannon.gameObject.GetComponent<cannonObject>().shoot(this.transform.forward);
+        GameObject obj = PhotonNetwork.Instantiate("shootingObject", cannon.transform.position, Quaternion.identity, 0);
+        obj.GetPhotonView().RPC("shooting", RpcTarget.All, cannon.GetComponent<cannonObject>().getShootingPos().right);
+
 
         }
         curCoolDown = maxCoolDown;  

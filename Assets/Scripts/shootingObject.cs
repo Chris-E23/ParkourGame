@@ -51,7 +51,7 @@ public class shootingObject : MonoBehaviourPunCallbacks
     [PunRPC]
    public void shooting(Vector3 rot)
     {
-        Vector3 dir = rot*100;
+        Vector3 dir = rot*50;
        this.gameObject.GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
     }   
 }

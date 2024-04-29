@@ -153,8 +153,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
             if(holding && Input.GetMouseButton(0) && !isDead)
             {
                 shootTime -= Time.deltaTime; 
-                if(shootTime <=0)
+                if(shootTime <=0){
                     shoot();
+                    Debug.Log("shooting");
+                }
+                    
             }
 
            if (Input.GetKey(KeyCode.F) && !isDead) //Pushing functionality. Use F key to push. 

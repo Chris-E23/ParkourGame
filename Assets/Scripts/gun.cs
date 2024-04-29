@@ -5,7 +5,7 @@ using Photon.Pun;
 using System;
 using UnityEngine.UIElements;
 
-public class gun : MonoBehaviourPun
+public class gun : MonoBehaviourPunCallbacks
 {
     bool yes; //this means pickedup, bad name for a variable 
     private GameObject player;

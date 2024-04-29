@@ -56,7 +56,7 @@ public class CannonScript : MonoBehaviourPunCallbacks, IOnEventCallback
     {
       
         if(curCoolDown >=0){
-            Debug.Log(curCoolDown);
+            //Debug.Log(curCoolDown);
             curCoolDown -= Time.deltaTime;
         }
         else{

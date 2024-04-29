@@ -13,7 +13,7 @@ public class cannonObject : MonoBehaviourPunCallbacks
    public void shoot(Vector3 direction){
 
         GameObject obj = PhotonNetwork.Instantiate("shootingObject", shootingPos.right, Quaternion.identity, 0);
-         obj.gameObject.GetComponent<Rigidbody>().AddForce(this.transform.forward, ForceMode.Impulse);
+       obj.GetPhotonView().RPC("shooting", RpcTarget.All, direction);
 
         //if(obj.gameObject.GetComponent<PhotonView>() != null)
            //obj.GetPhotonView().RPC("shooting", RpcTarget.All, this.transform.forward);

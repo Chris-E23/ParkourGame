@@ -44,7 +44,7 @@ public class spawnRandomPoles : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void spawnPoles(object thing){
         foreach(GameObject pole in poles){
-            PhotonNetwork.Instantiate("Pole", new Vector3(Random.Range(-10.0f, 10.0f), 0, Random.Range(25f, 80f)), Quaternion.identity, 0);
+            PhotonNetwork.Instantiate("Pole", new Vector3(Random.Range(-10.0f, 10.0f), 0, Random.Range(25f, 70f)), Quaternion.identity, 0);
 
         }
 
